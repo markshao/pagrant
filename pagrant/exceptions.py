@@ -5,6 +5,5 @@ __author__ = ['markshao']
 
 
 class PagrantError(Exception):
-    '''
-        The base exception for the pagrant
-    '''
+    """The base exception for the pagrant"""
+    pass
