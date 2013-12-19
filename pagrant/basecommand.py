@@ -13,7 +13,8 @@ __all__ = ['Command']
 class Command(object):
     name = None
     usage = None
-    hide = None
+    hidden = None
+    summary = ""
 
     def __init__(self):
         parser_kw = {

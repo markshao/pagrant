@@ -7,4 +7,10 @@ from pagrant.basecommand import Command
 
 
 class VmpCommand(Command):
-    pass
+    """
+        The vmp is used to manage the vm providers which
+        has been installed in the current pagrant framework
+    """
+    name = "vmp"
+    usage = """%prog [options]"""
+    summary = "vmp"
