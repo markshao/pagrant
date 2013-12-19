@@ -4,7 +4,7 @@
 __author__ = ['markshao']
 
 import sys
-from pagrant.commands import commands
+from pagrant.commands import commands, get_summaries
 from pagrant.cmdparser import ConfigOptionParser, UpdatingDefaultsHelpFormatter
 from pagrant.exceptions import PagrantError
 from pagrant.util import get_prog
@@ -23,12 +23,15 @@ def create_main_parser():
     parser = ConfigOptionParser(**parser_kw)
     parser.disable_interspersed_args()
 
-
     # add the general options
     gen_opts = cmdoptions.make_option_group(cmdoptions.general_group, parser)
     parser.add_option_group(gen_opts)
 
-    parser.main = True # so the help formatter knows
+    # create command listing for description
+    command_summaries = get_summaries()
+    description = [''] + ['%-27s %s' % (i, j) for i, j in command_summaries]
+    parser.description = '\n'.join(description)
+    parser.main = True  # so the help formatter knows
 
     return parser
 
@@ -39,7 +42,7 @@ def parse_opts(args):
     # first get the general options
     general_options, args_else = main_parser.parse_args(args)
 
-    if not args_else or (args_else[0] == 'help' and len(args_else) == 1):
+    if not args_else or (args_else[0].lower() == 'help' and len(args_else) == 1):
         main_parser.print_help()
         sys.exit()
 

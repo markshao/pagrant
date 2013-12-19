@@ -6,13 +6,9 @@ __author__ = ['markshao']
 import sys
 import os
 
+
 def get_prog():
-    try:
-        if os.path.basename(sys.argv[0]) in ('__main__.py', '-c'):
-            return "%s -m pip" % sys.executable
-    except (AttributeError, TypeError, IndexError):
-        pass
-    return 'pip'
+    return 'pagrant'
 
 
 def get_terminal_size():
