@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from pagrant.main import run
+from pagrant import main
 
 if __name__ == '__main__':
-    run()
+    main()
