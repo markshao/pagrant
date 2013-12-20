@@ -3,8 +3,9 @@
 
 __author__ = ['markshao']
 
+import optparse
 from pagrant import cmdoptions
-from pagrant.cmdparser import ConfigOptionParser
+from pagrant.cmdparser import ConfigOptionParser, UpdatingDefaultsHelpFormatter
 from pagrant.util import get_prog
 
 __all__ = ['Command']
