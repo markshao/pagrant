@@ -14,3 +14,8 @@ class VmpCommand(Command):
     name = "vmp"
     usage = """%prog [options]"""
     summary = "vmp"
+
+    def setup_logging(self):
+        pass
+
+
