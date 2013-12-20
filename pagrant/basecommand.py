@@ -4,9 +4,11 @@
 __author__ = ['markshao']
 
 import optparse
+import sys
 from pagrant import cmdoptions
 from pagrant.cmdparser import ConfigOptionParser, UpdatingDefaultsHelpFormatter
 from pagrant.util import get_prog
+from pagrant.exceptions import PagrantError
 
 __all__ = ['Command']
 
@@ -54,4 +56,8 @@ class Command(object):
         """
             The main interface for exectute the command
         """
-        pass
+        try:
+            self.run(args)
+        except PagrantError, e:
+            sys.stderr.write("%s\n", e)
+            sys.exit()

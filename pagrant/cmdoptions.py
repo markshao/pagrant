@@ -80,11 +80,6 @@ log_file = OptionMaker(
 general_group = {
     'name': 'General Options',
     'options': [
-        help_,
-        version,
-        quiet,
-        log_file,
-        log,
-        log_explicit_levels,
+        help_
     ]
 }
