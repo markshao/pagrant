@@ -4,9 +4,10 @@
 __author__ = ['markshao']
 
 import sys
-from pagrant.commands import commands, get_summaries
+import os
+from pagrant.commands import commands, get_summaries, get_similar_commands
 from pagrant.cmdparser import ConfigOptionParser, UpdatingDefaultsHelpFormatter
-from pagrant.exceptions import PagrantError
+from pagrant.exceptions import PagrantError, CommandError
 from pagrant.util import get_prog
 from pagrant import cmdoptions
 
@@ -48,6 +49,15 @@ def parse_opts(args):
 
     # the subcommand name
     cmd_name = args_else[0].lower()
+
+    # check the cmd_name existed
+    if cmd_name not in commands:
+        guess = get_similar_commands(cmd_name)
+        msg = ['unknown command "%s"' % cmd_name]
+        if guess:
+            msg.append('maybe you meant "%s"' % guess)
+
+        raise CommandError(' - '.join(msg))
 
     #all the args without the subcommand
     cmd_args = args[:]

@@ -19,3 +19,17 @@ def get_summaries(ignore_hidden=True, ordered=True):
         if ignore_hidden and command_class.hidden:
             continue
         yield (name, command_class.summary)
+
+
+def get_similar_commands(name):
+    """Command name auto-correct."""
+    from difflib import get_close_matches
+
+    close_commands = get_close_matches(name, commands.keys())
+
+    if close_commands:
+        guess = close_commands[0]
+    else:
+        guess = False
+
+    return guess
