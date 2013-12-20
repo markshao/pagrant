@@ -28,3 +28,8 @@ class VmpCommand(Command):
         if not args_else or (args_else[0].lower() == 'help' and len(args_else) == 1):
             self.parser.print_help()
             sys.exit()
+
+
+class VmpBaseSubcommand(object):
+    def __init__(self):
+        pass
