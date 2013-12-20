@@ -36,3 +36,22 @@ class Command(object):
         # Add the general options
         gen_opts = cmdoptions.make_option_group(cmdoptions.general_group, self.parser)
         self.parser.add_option_group(gen_opts)
+
+    def setup_logging(self):
+        pass
+
+    def parse_args(self, args):
+        # factored out for testability
+        return self.parser.parse_args(args)
+
+    def run(self, args):
+        """
+            The sub command class should overide this method
+        """
+        NotImplemented
+
+    def execute(self, args=None):
+        """
+            The main interface for exectute the command
+        """
+        pass
