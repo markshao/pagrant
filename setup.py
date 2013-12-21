@@ -1,3 +1,5 @@
+from __future__ import with_statement
+
 import os
 
 from setuptools import setup, find_packages
@@ -5,6 +7,12 @@ from setuptools import setup, find_packages
 
 README = os.path.join(os.path.dirname(__file__), 'README.md')
 REQUIREMENT = os.path.join(os.path.dirname(__file__), 'requirements.txt')
+
+
+def dependency():
+    with open(REQUIREMENT) as f:
+        filter(lambda x: x != '', f.read().split("\n"))
+
 
 setup(
     name='pagrant',
@@ -23,5 +31,5 @@ setup(
     packages=find_packages(),
     package_data={'': ['*.*'], },
     namespace_packages=['pagrant'],
-    install_requires=filter(lambda x:x!='',open(REQUIREMENT).read().split("\n")),
+    install_requires=dependency(),
 )
