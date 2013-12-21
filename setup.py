@@ -28,7 +28,7 @@ setup(
         "Topic :: Software Developement :: Libraries :: Python Modules",
     ],
     keywords='framework nose testing',
-    packages=find_packages(),
+    packages=find_packages(exclude=['test']),
     package_data={'': ['*.*'], },
     namespace_packages=['pagrant'],
     install_requires=dependency(),
