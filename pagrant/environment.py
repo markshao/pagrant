@@ -7,4 +7,5 @@ __author__ = ['markshao']
 # each test contains a environment for test
 
 class Environment(object):
-    pass
+    def __init__(self):
+        pass
