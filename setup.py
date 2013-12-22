@@ -22,7 +22,7 @@ setup(
     author='markshao,yilan',
     author_email='mark.shao@emc.com',
     description='a distributed test framework',
-    scripts=['bin/script'],
+    scripts=['bin/pagrant'],
     classifiers=[
         "Programming Language :: Python",
         "Topic :: Software Developement :: Libraries :: Python Modules",
