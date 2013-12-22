@@ -16,16 +16,18 @@ def dependency():
 
 setup(
     name='pagrant',
-    version='1.0',
+    version='1.1',
     url='https://github.com/markshao/pagrant',
     license='MIT',
     author='markshao,yilan',
     author_email='mark.shao@emc.com',
-    description=('a automatic test framwork', "from MarkShao"),
+    description='a distributed test framework',
+    scripts=['bin/pagrant'],
     classifiers=[
         "Programming Language :: Python",
         "Topic :: Software Developement :: Libraries :: Python Modules",
     ],
+    platforms='any',
     keywords='framework nose testing',
     packages=find_packages(exclude=['test']),
     namespace_packages=['pagrant'],
