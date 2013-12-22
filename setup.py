@@ -22,7 +22,7 @@ setup(
     author='markshao,yilan',
     author_email='mark.shao@emc.com',
     description='a distributed test framework',
-    scripts=['bin/pagrant'],
+    scripts=['bin/script'],
     classifiers=[
         "Programming Language :: Python",
         "Topic :: Software Developement :: Libraries :: Python Modules",
@@ -31,5 +31,11 @@ setup(
     keywords='framework nose testing',
     packages=find_packages(exclude=['test']),
     namespace_packages=['pagrant'],
-    install_requires=dependency(),
+    install_requires=('Fabric==1.8.0',
+                      'colorama==0.2.7',
+                      'ecdsa==0.10',
+                      'nose==1.3.0',
+                      'paramiko==1.12.0',
+                      'pycrypto==2.6.1',
+                      'wsgiref==0.1.2'),
 )
