@@ -4,9 +4,13 @@
 __author__ = ['markshao']
 
 from pagrant.commands.vmp import VmpCommand
+from pagrant.commands.init import InitCommand
+from pagrant.commands.test import TestCommand
 
 commands = {
-    VmpCommand.name: VmpCommand
+    VmpCommand.name: VmpCommand,
+    InitCommand.name: InitCommand,
+    TestCommand.name: TestCommand
 }
 
 

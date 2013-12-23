@@ -3,7 +3,6 @@
 
 __author__ = ['markshao']
 
-import sys
 from pagrant.basecommand import Command
 
 
@@ -13,7 +12,7 @@ class VmpCommand(Command):
     """
     name = "vmprovider"
     usage = """%prog [options]"""
-    summary = "vmprovider"
+    summary = "display all the providers support by the pagrant , but you can extend it by your selves"
 
     def __init__(self):
         # first init the base class
@@ -23,11 +22,7 @@ class VmpCommand(Command):
         pass
 
     def run(self, args):
-        option, args_else = self.parser.parse_args(args)
-
-        if not args_else or (args_else[0].lower() == 'help' and len(args_else) == 1):
-            self.parser.print_help()
-            sys.exit()
+        pass
 
 
 class VmpBaseSubcommand(object):
