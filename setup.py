@@ -30,7 +30,6 @@ setup(
     platforms='any',
     keywords='framework nose testing',
     packages=find_packages(exclude=['test']),
-    namespace_packages=['pagrant'],
     install_requires=('Fabric==1.8.0',
                       'colorama==0.2.7',
                       'ecdsa==0.10',
