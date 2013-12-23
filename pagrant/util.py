@@ -3,8 +3,11 @@
 
 __author__ = ['markshao']
 
-import sys
 import os
+import sys
+
+TRUE_BOOLEAN = ("YES", "Y")
+FALSE_BOOLEAN = ("NO", "N")
 
 
 def get_prog():
@@ -42,3 +45,18 @@ def get_terminal_size():
     if not cr:
         cr = (os.environ.get('LINES', 25), os.environ.get('COLUMNS', 80))
     return int(cr[1]), int(cr[0])
+
+
+def get_userinput(msg, retry=3):
+    for i in xrange(retry):
+        resp = raw_input(msg)
+        if resp.upper() in TRUE_BOOLEAN + FALSE_BOOLEAN:
+            break
+    else:
+        sys.stderr.write("The pagrant could been created due to the user's wrong input\n")
+        sys.exit(1)
+    return resp
+
+
+def is_true(value):
+    return value.upper() in TRUE_BOOLEAN

@@ -33,10 +33,18 @@ def _run(cmd, output=False):
         return out
     return subprocess.check_call('{}'.format(cmd), shell=True) # returns 0 for True
 
+
 class ContainerAlreadyExists(Exception): pass
+
+
 class ContainerDoesntExists(Exception): pass
+
+
 class ContainerAlreadyRunning(Exception): pass
+
+
 class ContainerNotRunning(Exception): pass
+
 
 def exists(container):
     '''
@@ -57,7 +65,7 @@ def create(container, template='ubuntu', storage=None, xargs=None):
     command += ' -t {}'.format(template)
     if storage: command += ' -B {}'.format(storage)
     if xargs: command += ' -- {}'.format(storage)
-            
+
     return _run(command)
 
 
@@ -70,7 +78,7 @@ def clone(orig=None, new=None, snapshot=False):
 
         command = 'lxc-clone -o {} -n {}'.format(orig, new)
         if snapshot: command += ' -s'
-                
+
         return _run(command)
 
 
@@ -81,7 +89,7 @@ def info(container):
     if not exists(container): raise ContainerDoesntExists('Container {} does not exist!'.format(container))
 
     output = _run('lxc-info -qn {}'.format(container), output=True).splitlines()
-    
+
     state = output[0].split()[1]
 
     if state == 'STOPPED':
@@ -99,8 +107,10 @@ def ls():
 
     Note: Directory mode for Ubuntu 12/13 compatibility
     '''
-    try: ct_list = os.listdir('/var/lib/lxc/')
-    except OSError: ct_list = []
+    try:
+        ct_list = os.listdir('/var/lib/lxc/')
+    except OSError:
+        ct_list = []
     return sorted(ct_list)
 
 
@@ -188,8 +198,10 @@ def checkconfig():
     Returns the output of lxc-checkconfig (colors cleared)
     '''
     out = _run('lxc-checkconfig', output=True)
-    if out: return out.replace('[1;32m', '').replace('[1;33m', '').replace('[0;39m', '').replace('[1;32m', '').replace('\x1b', '').replace(': ', ':').split('\n')
+    if out: return out.replace('[1;32m', '').replace('[1;33m', '').replace('[0;39m', '').replace('[1;32m', '').replace(
+        '\x1b', '').replace(': ', ':').split('\n')
     return out
+
 
 def cgroup(container, key, value):
     if not exists(container): raise ContainerDoesntExists('Container {} does not exist!'.format(container))

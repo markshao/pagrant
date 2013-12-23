@@ -4,7 +4,13 @@
 __author__ = 'markshao'
 
 import os
+import sys
+import shutil
+
 from pagrant.basecommand import Command
+from pagrant.util import get_userinput, is_true
+from pagrant.globalsettings import PAGRANT_CONFIG_TEMPLATE_PATH
+
 
 PAGRANT_CONFIG_FILE_NAME = "Pagrantfile"
 
@@ -15,7 +21,7 @@ class InitCommand(Command):
     summary = "help init the environment for the test"
 
     def __init__(self):
-        pass
+        super(InitCommand, self).__init__()
 
     def setup_logging(self):
         pass
@@ -25,9 +31,16 @@ class InitCommand(Command):
 
         # check the config whether already existed
         if os.path.exists(pagrant_config_path):
-            need_create_new = raw_input("The Pagrantfile is existed , keep it ? (yes/no)")
+            resp = get_userinput("The Pagrant has already existed,do you need to overide it ? (yes/no):")
+            if is_true(resp):
+                self._create_new_pagrant_file(pagrant_config_path)
+            else:
+                sys.stdout.write("The Pagrantfile is not created. Keep using the old one \n")
         else:
-            pass
+            self._create_new_pagrant_file(pagrant_config_path)
 
-    def _create_new_pagrant_file(self):
-        pass
+    def _create_new_pagrant_file(self, pagrant_config_path):
+        if os.path.exists(pagrant_config_path):
+            os.remove(pagrant_config_path)
+
+        shutil.copy(PAGRANT_CONFIG_TEMPLATE_PATH, pagrant_config_path)
