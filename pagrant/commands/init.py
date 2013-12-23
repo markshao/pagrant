@@ -13,3 +13,9 @@ class InitCommand(Command):
 
     def __init__(self):
         pass
+
+    def setup_logging(self):
+        pass
+
+    def run(self, args):
+        pass
