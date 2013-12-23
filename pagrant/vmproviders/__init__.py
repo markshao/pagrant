@@ -3,6 +3,8 @@
 
 __author__ = ['markshao']
 
+from pagrant.vmproviders import lxc
+
 providers = {
-    'lxc': 'lxc'
+    lxc.provider_name: lxc.privider_summary,
 }

@@ -3,7 +3,9 @@
 
 __author__ = ['markshao']
 
+import sys
 from pagrant.basecommand import Command
+from pagrant.vmproviders import providers
 
 
 class VmpCommand(Command):
@@ -17,14 +19,18 @@ class VmpCommand(Command):
     def __init__(self):
         # first init the base class
         super(VmpCommand, self).__init__()
+        self.left_length = 30
 
     def setup_logging(self):
         pass
 
     def run(self, args):
-        pass
+        sys.stdout.write("VM Providers list:\n")
+        for name, summary in providers.items():
+            sys.stdout.write(" " * 3)
+            sys.stdout.write(name)
+            sys.stdout.write(" " * self._calc_space(name))
+            sys.stdout.write("%s\n" % summary)
 
-
-class VmpBaseSubcommand(object):
-    def __init__(self):
-        pass
+    def _calc_space(self, name):
+        return self.left_length - 3 - len(name)
