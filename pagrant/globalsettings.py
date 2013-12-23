@@ -8,6 +8,7 @@ import os
 PROJECT_NAME = "pagrant"
 
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))[:-len(PROJECT_NAME)]
-TEMPLATE_PATH = os.path.join(ROOT_PATH, "templates")
 
-PAGRANT_CONFIG_TEMPLATE_PATH = os.path.join(TEMPLATE_PATH, "Pagrantfile")
+PAGRANT_SRC_ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
+
+PAGRANT_CONFIG_TEMPLATE_PATH = os.path.join(PAGRANT_SRC_ROOT_PATH, "templates", "Pagrantfile.py")

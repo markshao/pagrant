@@ -1,6 +1,8 @@
 #!/usr/bin/python
 #coding:utf8
 
+__author__ = ['markshao']
+
 # pagrant version
 PAGRANT_VERSION = "1.0"
 
