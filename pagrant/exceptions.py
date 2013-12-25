@@ -12,3 +12,9 @@ class PagrantError(Exception):
 class CommandError(PagrantError):
     """ Command parser error """
     pass
+
+
+class PagrantConfigError(PagrantError):
+    """ The pagrantConfig file error
+    """
+    pass

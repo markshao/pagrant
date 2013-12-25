@@ -8,7 +8,7 @@ import sys
 from pagrant import cmdoptions
 from pagrant.cmdparser import ConfigOptionParser, UpdatingDefaultsHelpFormatter
 from pagrant.util import get_prog
-from pagrant.exceptions import PagrantError
+from pagrant.exceptions import PagrantError, PagrantConfigError
 from pagrant.log import logger
 
 __all__ = ['Command']
@@ -80,6 +80,9 @@ class Command(object):
 
         try:
             self.run(args)
+        except PagrantConfigError, e:
+            self.logger.error(e.message)
+            sys.exit(1)
         except PagrantError, e:
-            sys.stderr.write("%s\n", e)
-            sys.exit()
+            self.logger.error(e.message)
+            sys.exit(1)
