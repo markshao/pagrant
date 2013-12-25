@@ -10,7 +10,7 @@ from nose import main
 from pagrant.basecommand import Command
 from pagrant.commands.init import PAGRANT_CONFIG_FILE_NAME
 from pagrant.environment import Environment
-from pagrant.exceptions import PagrantConfigError
+from pagrant.exceptions import PagrantConfigError, TestError
 
 
 class TestCommand(Command):
@@ -43,8 +43,12 @@ class TestCommand(Command):
         try:
             main(args)
         except Exception, e:
-            self.logger.error(e.message)
+            raise TestError(e.message)
         finally:
+            self.logger.warn("start stop all the machines")
+            self.environment.stop_machines()
+            self.logger.warn("finish stop all the machiines")
+
             self.logger.warn("start destroy all the machines")
             self.environment.destroy_machines()
             self.logger.warn("finish destroy all the machiines")

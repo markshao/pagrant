@@ -4,8 +4,11 @@
 __author__ = ['markshao']
 
 STATUS = {
+    'NEW_CREATED': 0,
     'RUNNING': 1,
-    'STOP': 0
+    'STOP': 2,
+    'DESTROY': 3,
+    'UNKNOWN': -99
 }
 
 

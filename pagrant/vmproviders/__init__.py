@@ -4,7 +4,6 @@
 __author__ = ['markshao']
 
 from pagrant.vmproviders import lxc
-from pagrant.exceptions import VirtualBootstrapError
 
 
 providers = {
@@ -20,44 +19,14 @@ class BaseProvider(object):
     def create_machine(self, machine_setting):
         NotImplemented
 
-    def create_machines(self, machines_setting):
-        self.logger.warn("Start create the machines")
-        try:
-            for machine in machines_setting.keys():
-                self.create_machine(machines_setting[machine])
-        except Exception, e:
-            raise VirtualBootstrapError(str(e))
-        self.logger.warn("Finish create the machines")
-
     def start_machine(self, machine_setting):
         NotImplemented
-
-    def start_machines(self, machines_setting):
-        try:
-            for machine in machines_setting.keys():
-                self.start_machine(machines_setting[machine])
-        except Exception, e:
-            raise VirtualBootstrapError(str(e))
 
     def stop_machine(self, machine_setting):
         NotImplemented
 
-    def stop_machines(self, machines_setting):
-        try:
-            for machine in machines_setting.keys():
-                self.stop_machine(machines_setting[machine])
-        except Exception, e:
-            raise VirtualBootstrapError(str(e))
-
     def destroy_machine(self, machine_setting):
         NotImplemented
-
-    def destroy_machiens(self, machines_setting):
-        try:
-            for machine in machines_setting.keys():
-                self.destroy_machine(machines_setting[machine])
-        except Exception, e:
-            raise VirtualBootstrapError(str(e))
 
 
 from pagrant.vmproviders.lxc.actions import LxcProvider

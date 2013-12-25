@@ -5,7 +5,9 @@ __author__ = ['markshao']
 
 import copy
 from pagrant.pagrantfile import ContextConfig
+from pagrant.exceptions import VirtualBootstrapError
 from pagrant.vmproviders import providers_class_map
+from pagrant.machine import STATUS
 
 # each test contains a environment for test
 
@@ -28,13 +30,52 @@ class Environment(object):
         return self._vmprovider
 
     def create_machines(self):
-        self._vmprovider.create_machines(self.machines_info)
+        for machine_name in self.machines_info.keys():
+            machine = self.machines_info[machine_name]
+            machine_state = getattr(machine, "status", STATUS['UNKNOWN'])
+            if not machine_state == STATUS['UNKNOWN']:
+                raise VirtualBootstrapError(
+                    "The vm [%s] is not in the right status,current status is [%s],should be unknown" % machine,
+                    machine_state)
+
+            self._vmprovider.create_machine(machine)
+            machine["status"] = STATUS['NEW_CREATED']
 
     def start_machines(self):
-        self._vmprovider.start_machines(self.machines_info)
+        for machine_name in self.machines_info.keys():
+            machine = self.machines_info[machine_name]
+            machine_state = machine.get("status", STATUS['UNKNOWN'])
+            if machine_state == STATUS['RUNNING']:
+                self.logger.warn("The vm [%s] is already in the running mode" % machine_name)
+
+            if machine_state in (STATUS['STOP'], STATUS['NEW_CREATED']):
+                self._vmprovider.start_machine(machine)
+                machine["status"] = STATUS['RUNNING']
+            else:
+                raise VirtualBootstrapError("the vm [%s] is not in the right status" % machine_name)
 
     def stop_machines(self):
-        self._vmprovider.stop_machines(self.machines_info)
+        for machine_name in self.machines_info.keys():
+            machine = self.machines_info[machine_name]
+            machine_state = machine.get("status", STATUS['UNKNOWN'])
+            if machine_state == STATUS['STOP']:
+                self.logger.warn("The vm [%s] is already in the stop mode" % machine_name)
+
+            if machine_state in (STATUS['RUNNING'],):
+                self._vmprovider.stop_machine(machine)
+                machine["status"] = STATUS['STOP']
+            else:
+                raise VirtualBootstrapError("the vm [%s] is not in the right status" % machine_name)
 
     def destroy_machines(self):
-        self._vmprovider.destroy_machiens(self.machines_info)
+        for machine_name in self.machines_info.keys():
+            machine = self.machines_info[machine_name]
+            machine_state = machine.get("status", STATUS['UNKNOWN'])
+            if machine_state == STATUS['DESTROY']:
+                self.logger.warn("The vm [%s] is already in the running mode" % machine_name)
+
+            if machine_state in (STATUS['STOP'], STATUS['NEW_CREATED']):
+                self._vmprovider.destroy_machine(machine)
+                machine["status"] = STATUS['RUNNING']
+            else:
+                raise VirtualBootstrapError("the vm [%s] is not in the right status" % machine_name)
