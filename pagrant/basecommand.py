@@ -7,8 +7,8 @@ import optparse
 import sys
 from pagrant import cmdoptions
 from pagrant.cmdparser import ConfigOptionParser, UpdatingDefaultsHelpFormatter
-from pagrant.util import get_prog
-from pagrant.exceptions import PagrantError, PagrantConfigError
+from pagrant.util import get_prog, format_exc
+from pagrant.exceptions import PagrantError, PagrantConfigError, VirtualBootstrapError
 from pagrant.log import logger
 
 __all__ = ['Command']
@@ -80,9 +80,15 @@ class Command(object):
 
         try:
             self.run(args)
-        except PagrantConfigError, e:
-            self.logger.error(e.message)
+        except VirtualBootstrapError:
+            self.logger.fatal("ERROR: %s" % str(sys.exc_info()[1]))
+            self.logger.error('Exception information:\n%s' % format_exc())
             sys.exit(1)
-        except PagrantError, e:
-            self.logger.error(e.message)
+        except PagrantConfigError:
+            self.logger.fatal("ERROR: %s" % str(sys.exc_info()[1]))
+            self.logger.error('Exception information:\n%s' % format_exc())
+            sys.exit(1)
+        except PagrantError:
+            sself.logger.fatal("ERROR: %s" % str(sys.exc_info()[1]))
+            self.logger.error('Exception information:\n%s' % format_exc())
             sys.exit(1)

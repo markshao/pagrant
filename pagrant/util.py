@@ -5,6 +5,12 @@ __author__ = ['markshao']
 
 import os
 import sys
+import traceback
+
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
 
 TRUE_BOOLEAN = ("YES", "Y")
 FALSE_BOOLEAN = ("NO", "N")
@@ -60,3 +66,11 @@ def get_userinput(msg, retry=3):
 
 def is_true(value):
     return value.upper() in TRUE_BOOLEAN
+
+
+def format_exc(exc_info=None):
+    if exc_info is None:
+        exc_info = sys.exc_info()
+    out = StringIO()
+    traceback.print_exception(*exc_info, **dict(file=out))
+    return out.getvalue()

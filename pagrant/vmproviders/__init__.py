@@ -55,7 +55,7 @@ class BaseProvider(object):
     def destroy_machiens(self, machines_setting):
         try:
             for machine in machines_setting.keys():
-                self.destroy_machien(machines_setting[machine])
+                self.destroy_machine(machines_setting[machine])
         except Exception, e:
             raise VirtualBootstrapError(str(e))
 

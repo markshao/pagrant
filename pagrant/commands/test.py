@@ -30,7 +30,21 @@ class TestCommand(Command):
         # validate the Pagrantfile config
         self.environment = Environment(os.path.abspath(PAGRANT_CONFIG_FILE_NAME), self.logger)
 
-        self.environment.create_machines()
-
         self.logger.warn("start running the test cases ... \n")
-        main(args)
+
+        self.logger.warn("start create the vms ...")
+        self.environment.create_machines()
+        self.logger.warn("finish create the vms")
+
+        self.logger.warn("start bootstrap the vms ...")
+        self.environment.start_machines()
+        self.logger.warn("finish boostrap the vms")
+
+        try:
+            main(args)
+        except Exception, e:
+            self.logger.error(e.message)
+        finally:
+            self.logger.warn("start destroy all the machines")
+            self.environment.destroy_machines()
+            self.logger.warn("finish destroy all the machiines")

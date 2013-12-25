@@ -3,6 +3,7 @@
 
 __author__ = ['markshao']
 
+import copy
 from pagrant.pagrantfile import ContextConfig
 from pagrant.vmproviders import providers_class_map
 
@@ -20,11 +21,20 @@ class Environment(object):
         vmprovider_type = self.context_config.get_vmprovider_type()
         vmprovider_class = providers_class_map.get(vmprovider_type)
         self._vmprovider = vmprovider_class(self.context_config.get_vmprovider_config(), self.logger)
-        self.machines_info = {}
+        self.machines_info = copy.deepcopy(self.context_config.get_machine_settings())
 
     @property
     def vmprovider(self):
         return self._vmprovider
 
     def create_machines(self):
-        self._vmprovider.create_machines(self.context_config.get_machine_settings())
+        self._vmprovider.create_machines(self.machines_info)
+
+    def start_machines(self):
+        self._vmprovider.start_machines(self.machines_info)
+
+    def stop_machines(self):
+        self._vmprovider.stop_machines(self.machines_info)
+
+    def destroy_machines(self):
+        self._vmprovider.destroy_machiens(self.machines_info)
