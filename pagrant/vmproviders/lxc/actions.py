@@ -3,9 +3,12 @@
 
 __author__ = 'markshao'
 
+import commands
 from pagrant.vmproviders import BaseProvider
 from pagrant.vendors import lxclite as lxc
-from pagrant.exceptions import VirtualBootstrapError
+from pagrant.exceptions import VirtualBootstrapError, PagrantError
+
+IP_COMMAND = "awk '{ print $4,$3 }' /var/lib/misc/dnsmasq.leases | column -t | grep %s |awk '{print $2}'"
 
 
 class LxcProvider(BaseProvider):
@@ -38,3 +41,10 @@ class LxcProvider(BaseProvider):
         else:
             self.logger.error("Fail to destroy the vm [%s]" % machine_setting['name'])
             raise VirtualBootstrapError("Fail to destroy the vm [%s] " % machine_setting['name'])
+
+    def get_machine_ip(self, machine_setting):
+        result = commands.getstatusoutput(IP_COMMAND % machine_setting['name'])
+        if not result[0] == 0:
+            raise PagrantError("execute the ip command fail")
+        else:
+            return result[1]

@@ -30,25 +30,17 @@ class TestCommand(Command):
         # validate the Pagrantfile config
         self.environment = Environment(os.path.abspath(PAGRANT_CONFIG_FILE_NAME), self.logger)
 
-        self.logger.warn("start running the test cases ... \n")
-
-        self.logger.warn("start create the vms ...")
+        self.logger.warn("start init the virtual environment for the test execution")
         self.environment.create_machines()
-        self.logger.warn("finish create the vms")
-
-        self.logger.warn("start bootstrap the vms ...")
         self.environment.start_machines()
-        self.logger.warn("finish boostrap the vms")
+        self.logger.warn("finish init the virtual environment for the test execution")
+
+        self.environment.init_test_context()
 
         try:
             main(args)
         except Exception, e:
             raise TestError(e.message)
         finally:
-            self.logger.warn("start stop all the machines")
             self.environment.stop_machines()
-            self.logger.warn("finish stop all the machiines")
-
-            self.logger.warn("start destroy all the machines")
             self.environment.destroy_machines()
-            self.logger.warn("finish destroy all the machiines")

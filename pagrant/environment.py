@@ -7,7 +7,7 @@ import copy
 from pagrant.pagrantfile import ContextConfig
 from pagrant.exceptions import VirtualBootstrapError
 from pagrant.vmproviders import providers_class_map
-from pagrant.machine import STATUS
+from pagrant.machine import STATUS, Machine
 
 # each test contains a environment for test
 
@@ -22,6 +22,9 @@ class Environment(object):
         # decide the vmprovider to user
         vmprovider_type = self.context_config.get_vmprovider_type()
         vmprovider_class = providers_class_map.get(vmprovider_type)
+
+        self.vmprovider_config = self.context_config.get_vmprovider_config()
+
         self._vmprovider = vmprovider_class(self.context_config.get_vmprovider_config(), self.logger)
         self.machines_info = copy.deepcopy(self.context_config.get_machine_settings())
 
@@ -76,6 +79,20 @@ class Environment(object):
 
             if machine_state in (STATUS['STOP'], STATUS['NEW_CREATED']):
                 self._vmprovider.destroy_machine(machine)
-                machine["status"] = STATUS['RUNNING']
+                machine["status"] = STATUS['DESTROY']
             else:
                 raise VirtualBootstrapError("the vm [%s] is not in the right status" % machine_name)
+
+    def init_test_context(self):
+        machines = {}
+        for machine_name in self.machines_info.keys():
+            machine = self.machines_info[machine_name]
+            machine_ip = machine.get("ip", None)
+            if not machine_ip:
+                machine["ip"] = self._vmprovider.get_machine_ip(machine)
+                self.logger.warn("The machine %s ip is [%s] " % (machine_name, machine["ip"]))
+
+            _m = Machine(machine["ip"], self.vmprovider_config["username"], self.vmprovider_config["password"])
+            machines[machine_name] = _m
+
+        self.logger.warn(machines)

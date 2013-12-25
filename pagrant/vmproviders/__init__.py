@@ -28,6 +28,9 @@ class BaseProvider(object):
     def destroy_machine(self, machine_setting):
         NotImplemented
 
+    def get_machine_ip(self, machine_setting):
+        NotImplemented
+
 
 from pagrant.vmproviders.lxc.actions import LxcProvider
 

@@ -13,7 +13,9 @@ vmprovider = "lxc"
 def vmprovider_config():
     return {
         "name": "lxc",
-        "template": "ubuntu"
+        "template": "ubuntu",
+        "username": "ubuntu",
+        "password": "password"
     }
 
 
