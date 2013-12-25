@@ -21,8 +21,9 @@ def machine_settings():
     machines = {}
 
     # example for define the machine_a example
-    machines['test-server'].ip = None
-    machines['test-server'].template = 'ubuntu'
-    machines['test-server'].name = 'test-server'
-
+    machines['test-server'] = {
+        "ip": None,
+        "template": "ubuntu",
+        "name": "test-server"
+    }
     return machines

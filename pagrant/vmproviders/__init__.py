@@ -17,12 +17,43 @@ class BaseProvider(object):
         self.logger = logger
         self.provider_info = provider_info
 
-    def _create_machines(self, machine_settings):
+    def create_machine(self, machine_setting):
         NotImplemented
 
-    def create_machines(self, machine_settings):
+    def create_machines(self, machines_setting):
         try:
-            self._create_machines(machine_settings)
+            for machine in machines_setting.keys():
+                self.create_machine(machines_setting[machine])
+        except Exception, e:
+            raise VirtualBootstrapError(str(e))
+
+    def start_machine(self, machine_setting):
+        pass
+
+    def start_machines(self, machines_setting):
+        try:
+            for machine in machines_setting.keys():
+                self.start_machine(machines_setting[machine])
+        except Exception, e:
+            raise VirtualBootstrapError(str(e))
+
+    def stop_machine(self, machine_setting):
+        pass
+
+    def stop_machines(self, machines_setting):
+        try:
+            for machine in machines_setting.keys():
+                self.stop_machine(machines_setting[machine])
+        except Exception, e:
+            raise VirtualBootstrapError(str(e))
+
+    def destroy_machine(self, machine_setting):
+        pass
+
+    def destroy_machiens(self, machines_setting):
+        try:
+            for machine in machines_setting.keys():
+                self.destroy_machien(machines_setting[machine])
         except Exception, e:
             raise VirtualBootstrapError(str(e))
 

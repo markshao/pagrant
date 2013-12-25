@@ -4,10 +4,14 @@
 __author__ = 'markshao'
 
 import imp
+import os
+
 from pagrant.exceptions import PagrantConfigError
 from pagrant.vmproviders import providers
 
+
 PAGRANTFILE_MODULE = "Pagrantfile"
+PAGRANTFILE_MODULE_COMPILE_PATH = os.path.join(os.path.curdir, "Pagrantfilec")
 
 
 class ContextConfig(object):
@@ -15,6 +19,8 @@ class ContextConfig(object):
         try:
             self.pagrantfile_path = pagrantfile_path
             self.pagrant_file_module = imp.load_source(PAGRANTFILE_MODULE, self.pagrantfile_path)
+
+            os.remove(PAGRANTFILE_MODULE_COMPILE_PATH)
         except ImportError:
             raise PagrantConfigError("Could not import the Pagrantfile, please check the syntax of the file")
 

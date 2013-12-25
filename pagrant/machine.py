@@ -3,6 +3,11 @@
 
 __author__ = ['markshao']
 
+STATUS = {
+    'RUNNING': 1,
+    'STOP': 0
+}
+
 
 class Machine(object):
     def __init__(self, host, username, password):

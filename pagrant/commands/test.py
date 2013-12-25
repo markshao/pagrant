@@ -31,7 +31,7 @@ class TestCommand(Command):
         self.environment = Environment(os.path.abspath(PAGRANT_CONFIG_FILE_NAME), self.logger)
 
         self.logger.warn("Start create the machines \n")
-        self.environment.create_machines()
+        #self.environment.create_machines()
         self.logger.warn("Finish create the machines \n")
 
         self.logger.warn("start running the test cases ... \n")

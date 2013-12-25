@@ -20,7 +20,7 @@ class Environment(object):
         vmprovider_type = self.context_config.get_vmprovider_type()
         vmprovider_class = providers_class_map.get(vmprovider_type)
         self._vmprovider = vmprovider_class(self.context_config.get_vmprovider_config(), self.logger)
-
+        self.machines_info = {}
 
     @property
     def vmprovider(self):
