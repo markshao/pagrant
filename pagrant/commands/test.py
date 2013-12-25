@@ -10,3 +10,8 @@ class TestCommand(Command):
     name = "test"
     usage = """%prog [options] """
     summary = "execute the test suites|cases with the options"
+
+    def __init__(self):
+        super(TestCommand, self).__init__()
+
+

@@ -9,6 +9,7 @@ from pagrant import cmdoptions
 from pagrant.cmdparser import ConfigOptionParser, UpdatingDefaultsHelpFormatter
 from pagrant.util import get_prog
 from pagrant.exceptions import PagrantError
+from pagrant.log import logger
 
 __all__ = ['Command']
 
@@ -39,6 +40,8 @@ class Command(object):
         gen_opts = cmdoptions.make_option_group(cmdoptions.general_group, self.parser)
         self.parser.add_option_group(gen_opts)
 
+        self.logger = None
+
     def setup_logging(self):
         pass
 
@@ -56,6 +59,25 @@ class Command(object):
         """
             The main interface for exectute the command
         """
+
+        options, args = self.parse_args(args)
+
+        level = 1  # Notify
+        level += getattr(options, "verbose", 0)
+        level -= getattr(options, "verbose", 0)
+        level = logger.level_for_integer(4 - level)
+        complete_log = []
+        logger.add_consumers(
+            (level, sys.stdout),
+            (logger.DEBUG, complete_log.append),
+        )
+        if options.log_explicit_levels:
+            logger.explicit_levels = True
+
+        self.logger = logger # if the sub command does nothing , we just reuse this log
+
+        self.setup_logging()
+
         try:
             self.run(args)
         except PagrantError, e:

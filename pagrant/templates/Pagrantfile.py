@@ -10,6 +10,13 @@ PAGRANT_VERSION = "1.0"
 vmprovider = "lxc"
 
 
+def vmprovider_config():
+    return {
+        "name": "lxc",
+        "template": "ubuntu"
+    }
+
+
 def machine_settings():
     machines = {}
 
