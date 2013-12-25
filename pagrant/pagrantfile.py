@@ -5,6 +5,7 @@ __author__ = 'markshao'
 
 import imp
 from pagrant.exceptions import PagrantConfigError
+from pagrant.vmproviders import providers
 
 PAGRANTFILE_MODULE = "Pagrantfile"
 
@@ -25,3 +26,16 @@ class ContextConfig(object):
         for key in required:
             if key not in dir(self.pagrant_file_module):
                 raise PagrantConfigError("The config not contains the element config %s" % key)
+
+    def get_machine_settings(self):
+        machine_settings = self.pagrant_file_module.machine_settings()
+        return machine_settings
+
+    def get_vmprovider_type(self):
+        vmprovider_type = self.pagrant_file_module.vmprovider
+        if vmprovider_type not in providers:
+            raise PagrantConfigError("""
+The vmprovider is not support by the pagrant right\n
+Please first check the vmprovider list through the command: pagrant vmprovider\n""")
+
+        return vmprovider_type

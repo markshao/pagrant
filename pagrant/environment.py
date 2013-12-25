@@ -12,3 +12,5 @@ class Environment(object):
     def __init__(self, pagrantfile_path):
         self.pagrantfile_path = pagrantfile_path
         self.context_config = ContextConfig(self.pagrantfile_path)
+
+        self.context_config.get_vmprovider_type()
