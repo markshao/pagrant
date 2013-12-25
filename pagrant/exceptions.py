@@ -18,3 +18,10 @@ class PagrantConfigError(PagrantError):
     """ The pagrantConfig file error
     """
     pass
+
+
+class VirtualBootstrapError(PagrantError):
+    """
+        The virtual boostrap error
+    """
+    pass

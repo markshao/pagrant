@@ -39,3 +39,6 @@ The vmprovider is not support by the pagrant right\n
 Please first check the vmprovider list through the command: pagrant vmprovider\n""")
 
         return vmprovider_type
+
+    def get_vmprovider_config(self):
+        return self.pagrant_file_module.vmprovider_config()
