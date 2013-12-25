@@ -21,14 +21,16 @@ class BaseProvider(object):
         NotImplemented
 
     def create_machines(self, machines_setting):
+        self.logger.warn("Start create the machines")
         try:
             for machine in machines_setting.keys():
                 self.create_machine(machines_setting[machine])
         except Exception, e:
             raise VirtualBootstrapError(str(e))
+        self.logger.warn("Finish create the machines")
 
     def start_machine(self, machine_setting):
-        pass
+        NotImplemented
 
     def start_machines(self, machines_setting):
         try:
@@ -38,7 +40,7 @@ class BaseProvider(object):
             raise VirtualBootstrapError(str(e))
 
     def stop_machine(self, machine_setting):
-        pass
+        NotImplemented
 
     def stop_machines(self, machines_setting):
         try:
@@ -48,7 +50,7 @@ class BaseProvider(object):
             raise VirtualBootstrapError(str(e))
 
     def destroy_machine(self, machine_setting):
-        pass
+        NotImplemented
 
     def destroy_machiens(self, machines_setting):
         try:
