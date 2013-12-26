@@ -8,7 +8,7 @@ class TestContext(object):
     def __init__(self):
         self.machines = {}
 
-    def set_machine_center(self, machines):
+    def set_machines(self, machines):
         self.machines = machines
 
 

@@ -8,6 +8,7 @@ from pagrant.pagrantfile import ContextConfig
 from pagrant.exceptions import VirtualBootstrapError
 from pagrant.vmproviders import providers_class_map
 from pagrant.machine import STATUS, Machine
+from pagrant.test import test_context
 
 # each test contains a environment for test
 
@@ -95,4 +96,5 @@ class Environment(object):
             _m = Machine(machine["ip"], self.vmprovider_config["username"], self.vmprovider_config["password"])
             machines[machine_name] = _m
 
-        self.logger.warn(str(machines))
+        # init the test context
+        test_context.set_machines(machines)

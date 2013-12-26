@@ -35,7 +35,7 @@ class LxcProvider(BaseProvider):
             self.logger.error("Fail to stop the vm [%s]" % machine_setting['name'])
             raise VirtualBootstrapError("Fail to stop the vm [%s] " % machine_setting['name'])
 
-    def destroy(self, machine_setting):
+    def destroy_machine(self, machine_setting):
         if lxc.destroy(machine_setting['name']) == 0:
             self.logger.warn("Successfully destroy the vm [%s]" % machine_setting['name'])
         else:

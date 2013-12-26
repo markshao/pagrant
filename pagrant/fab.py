@@ -14,6 +14,6 @@ class FabricSupport(object):
         self.password = password
 
     def execute_shell_command(self, command):
-        with settings(host=self.host, user=self.username, password=self.password):
+        with settings(host_string=self.host, user=self.username, password=self.password):
             return run(command, shell=True)
 
