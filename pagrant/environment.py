@@ -91,6 +91,8 @@ class Environment(object):
             machine_ip = machine.get("ip", None)
             if not machine_ip:
                 machine["ip"] = self._vmprovider.get_machine_ip(machine)
+                if not machine["ip"] or len(machine["ip"]) == 0:
+                    raise VirtualBootstrapError("could not get the ip")
                 self.logger.warn("The machine %s ip is [%s] " % (machine_name, machine["ip"]))
 
             _m = Machine(machine["ip"], self.vmprovider_config["username"], self.vmprovider_config["password"])

@@ -8,4 +8,4 @@ from pagrant.test import test_context
 
 def test_ls():
     machine = test_context.machines['test-server']
-    print machine.execute_command("ls -al")
+    print machine.execute_command("whoami")
