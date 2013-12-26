@@ -95,4 +95,4 @@ class Environment(object):
             _m = Machine(machine["ip"], self.vmprovider_config["username"], self.vmprovider_config["password"])
             machines[machine_name] = _m
 
-        self.logger.warn(machines)
+        self.logger.warn(str(machines))
