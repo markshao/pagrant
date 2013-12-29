@@ -60,6 +60,10 @@ class Command(object):
             The main interface for exectute the command
         """
 
+        import copy
+
+        args_bk = copy.deepcopy(args)
+
         options, args = self.parse_args(args)
 
         level = 1  # Notify
@@ -79,7 +83,7 @@ class Command(object):
         self.setup_logging()
 
         try:
-            self.run(args)
+            self.run(args_bk)
         except VirtualBootstrapError:
             self.logger.fatal("ERROR: %s" % str(sys.exc_info()[1]))
             self.logger.error('Exception information:\n%s' % format_exc())

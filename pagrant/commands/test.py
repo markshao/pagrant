@@ -4,6 +4,7 @@
 __author__ = ['markshao']
 
 import os
+from optparse import Option
 
 from nose import main
 
@@ -20,6 +21,13 @@ class TestCommand(Command):
 
     def __init__(self):
         super(TestCommand, self).__init__()
+        self.parser.add_option(Option(
+            # Writes the log levels explicitely to the log'
+            '--newvm',
+            dest='newvm',
+            action='store_true',
+            default=False,
+        ))
         self.environment = None
 
     def run(self, args):
@@ -30,17 +38,22 @@ class TestCommand(Command):
         # validate the Pagrantfile config
         self.environment = Environment(os.path.abspath(PAGRANT_CONFIG_FILE_NAME), self.logger)
 
-        self.logger.warn("start init the virtual environment for the test execution")
-        self.environment.create_machines()
-        self.environment.start_machines()
-        self.logger.warn("finish init the virtual environment for the test execution")
+        # deal with the parameter
+        options, nose_args = self.parser.parse_args(args)
 
+        if options.newvm:
+            self.logger.warn("start init the virtual environment for the test execution")
+            self.environment.create_machines()
+            self.environment.start_machines()
+            self.logger.warn("finish init the virtual environment for the test execution")
+
+        # the init is always needed
         self.environment.init_test_context()
-
         try:
-            main(args)
+            main(nose_args)
         except Exception, e:
             raise TestError(e.message)
         finally:
-            self.environment.stop_machines()
-            self.environment.destroy_machines()
+            if options.newvm:
+                self.environment.stop_machines()
+                self.environment.destroy_machines()
