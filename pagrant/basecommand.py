@@ -64,19 +64,19 @@ class Command(object):
 
         args_bk = copy.deepcopy(args)
 
-        options, args = self.parse_args(args)
+        #options, args = self.parse_args(args)
 
         level = 1  # Notify
-        level += getattr(options, "verbose", 0)
-        level -= getattr(options, "verbose", 0)
+        #level += getattr(options, "verbose", 0)
+        #level -= getattr(options, "verbose", 0)
         level = logger.level_for_integer(4 - level)
         complete_log = []
         logger.add_consumers(
             (level, sys.stdout),
             (logger.DEBUG, complete_log.append),
         )
-        if options.log_explicit_levels:
-            logger.explicit_levels = True
+        #if options.log_explicit_levels:
+        #    logger.explicit_levels = True
 
         self.logger = logger # if the sub command does nothing , we just reuse this log
 

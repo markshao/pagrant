@@ -41,9 +41,15 @@ class TestCommand(Command):
         self.environment = Environment(os.path.abspath(PAGRANT_CONFIG_FILE_NAME), self.logger)
 
         # deal with the parameter
-        options, nose_args = self.parser.parse_args(args)
+        newvm = True if "--newvm" in args and args[0] == "--newvm" else False
 
-        if options.newvm:
+        # currently is a work round
+        if "--newvm" in args and not args[0] == "--newvm":
+            raise PagrantConfigError("The --newvm should before the nose test parameters")
+
+        nose_args = args[1:] if newvm else args
+
+        if newvm:
             self.logger.warn("start init the virtual environment for the test execution")
             self.environment.create_machines()
             self.environment.start_machines()
@@ -51,11 +57,12 @@ class TestCommand(Command):
 
         # the init is always needed
         self.environment.init_test_context()
+
         try:
             main(nose_args)
         except Exception, e:
             raise TestError(e.message)
         finally:
-            if options.newvm:
+            if newvm:
                 self.environment.stop_machines()
                 self.environment.destroy_machines()
