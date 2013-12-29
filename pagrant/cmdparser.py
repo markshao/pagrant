@@ -3,6 +3,7 @@
 
 __author__ = ['markshao']
 
+import sys
 import textwrap
 import optparse
 from pagrant.util import get_terminal_size
