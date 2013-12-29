@@ -16,7 +16,7 @@ from pagrant.exceptions import PagrantConfigError, TestError
 
 class TestCommand(Command):
     name = "test"
-    usage = """%prog [options] """
+    usage = """%prog [options] [nose-options]"""
     summary = "execute the test suites|cases with the options"
 
     def __init__(self):
@@ -27,6 +27,8 @@ class TestCommand(Command):
             dest='newvm',
             action='store_true',
             default=False,
+            help="if set --newvm , the test will fisrt create the new vm against " \
+                 "the Pagrantfile and destroy them after test"
         ))
         self.environment = None
 
