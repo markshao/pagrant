@@ -17,7 +17,7 @@ from pagrant.exceptions import PagrantConfigError, TestError
 class TestCommand(Command):
     name = "test"
     usage = """%prog [options] [nose-options]"""
-    summary = "execute the test suites|cases with the options"
+    summary = "execute the test suites|case with the options"
 
     def __init__(self):
         super(TestCommand, self).__init__()
