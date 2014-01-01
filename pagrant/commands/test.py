@@ -4,6 +4,7 @@
 __author__ = ['markshao']
 
 import os
+import sys
 from optparse import Option
 
 from nose import main
@@ -46,6 +47,11 @@ class TestCommand(Command):
         # currently is a work round
         if "--newvm" in args and not args[0] == "--newvm":
             raise PagrantConfigError("The --newvm should before the nose test parameters")
+
+        # just work round for help function
+        if args[0] and args[0] in ("--help", "-h", "help"):
+            self.parser.print_help()
+            sys.exit(0)
 
         nose_args = args[1:] if newvm else args
 
