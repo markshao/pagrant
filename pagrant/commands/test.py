@@ -61,7 +61,7 @@ class TestCommand(Command):
         try:
             main(nose_args)
         except Exception, e:
-            raise TestError(e.message)
+            raise TestError("The nose test exception --- %s \n" % e.message)
         finally:
             if newvm:
                 self.environment.stop_machines()
