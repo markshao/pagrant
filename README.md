@@ -1,1 +1,1 @@
-## The test framework base on nose.
+## The POC for the test potable on vagrant idea.
