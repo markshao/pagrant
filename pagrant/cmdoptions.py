@@ -4,7 +4,7 @@
 __author__ = ['markshao']
 
 import copy
-from optparse import OptionGroup, SUPPRESS_HELP, Option
+from pagrant.vendors.myoptparser.optparse import OptionGroup, SUPPRESS_HELP, Option
 
 
 def make_option_group(group, parser):

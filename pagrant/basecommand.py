@@ -3,13 +3,15 @@
 
 __author__ = ['markshao']
 
-import optparse
 import sys
+
+from pagrant.vendors.myoptparser import optparse
 from pagrant import cmdoptions
 from pagrant.cmdparser import ConfigOptionParser, UpdatingDefaultsHelpFormatter
 from pagrant.util import get_prog, format_exc
 from pagrant.exceptions import PagrantError, PagrantConfigError, VirtualBootstrapError
 from pagrant.log import logger
+
 
 __all__ = ['Command']
 
@@ -64,21 +66,24 @@ class Command(object):
 
         args_bk = copy.deepcopy(args)
 
-        #options, args = self.parse_args(args)
+        try:
+            options, args = self.parse_args(args)
+        except (optparse.OptionError, optparse.BadOptionError), e:
+            options = None
 
         level = 1  # Notify
-        #level += getattr(options, "verbose", 0)
-        #level -= getattr(options, "verbose", 0)
+        level += getattr(options, "verbose", 0)
+        level -= getattr(options, "verbose", 0)
         level = logger.level_for_integer(4 - level)
         complete_log = []
         logger.add_consumers(
             (level, sys.stdout),
             (logger.DEBUG, complete_log.append),
         )
-        #if options.log_explicit_levels:
-        #    logger.explicit_levels = True
+        if getattr(options, "log_explicit_levels", False):
+            logger.explicit_levels = True
 
-        self.logger = logger # if the sub command does nothing , we just reuse this log
+        self.logger = logger  # if the sub command does nothing , we just reuse this log
 
         self.setup_logging()
 
