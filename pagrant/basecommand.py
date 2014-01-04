@@ -103,5 +103,4 @@ class Command(object):
             sys.exit(1)
         except KeyboardInterrupt:
             self.logger.fatal("The user interrupt the test case execution")
-            self.logger.error("The user interrupt the test case execution")
             sys.exit(1)
