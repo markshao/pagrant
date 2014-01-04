@@ -35,12 +35,14 @@ class InitCommand(Command):
             if is_true(resp):
                 self._create_new_pagrant_file(pagrant_config_path)
             else:
-                sys.stdout.write("The Pagrantfile is not created. Keep using the old one \n")
+                sys.stdout.write("The new Pagrantfile is not created. Keep using the old one \n")
         else:
             self._create_new_pagrant_file(pagrant_config_path)
 
     def _create_new_pagrant_file(self, pagrant_config_path):
         if os.path.exists(pagrant_config_path):
             os.remove(pagrant_config_path)
-
         shutil.copy(PAGRANT_CONFIG_TEMPLATE_PATH, pagrant_config_path)
+
+        # add the message for the new creation of pagrantfile
+        sys.stdout.write("The new Pagrantfile has been created. \n")
