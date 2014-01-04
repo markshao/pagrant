@@ -1,8 +1,10 @@
 from setuptools import setup, find_packages
 
+from pagrant.version import version_number
+
 setup(
     name='pagrant',
-    version='1.5',
+    version=version_number(),
     url='https://github.com/markshao/pagrant',
     license='MIT',
     author='markshao,yilan',
