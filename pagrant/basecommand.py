@@ -101,3 +101,7 @@ class Command(object):
             self.logger.fatal("ERROR: %s" % str(sys.exc_info()[1]))
             self.logger.error('Exception information:\n%s' % format_exc())
             sys.exit(1)
+        except KeyboardInterrupt:
+            self.logger.fatal("The user interrupt the test case execution")
+            self.logger.error("The user interrupt the test case execution")
+            sys.exit(1)
