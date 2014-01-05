@@ -15,7 +15,8 @@ class LxcProvider(BaseProvider):
     name = "lxc"
 
     def create_machine(self, machine_setting):
-        if lxc.create(machine_setting['name'], template=machine_setting['template']) == 0:
+        if lxc.create(machine_setting['name'], template=machine_setting['template'],
+                      guest_ip=machine_setting["ip"]) == 0:
             self.logger.warn("Finish create the machine [%s]" % machine_setting['name'])
         else:
             self.logger.error("Fail to create the vm [%s]" % machine_setting['name'])

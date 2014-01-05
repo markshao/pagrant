@@ -13,7 +13,6 @@ vmprovider = "lxc"
 def vmprovider_config():
     return {
         "name": "lxc",
-        "template": "ubuntu",
         "username": "ubuntu",
         "password": "password"
     }
@@ -24,8 +23,9 @@ def machine_settings():
 
     # example for define the machine_a example
     machines['test-server'] = {
-        "ip": None,
+        "ip": "10.0.3.7",
         "template": "ubuntu",
         "name": "test-server"
     }
+
     return machines
