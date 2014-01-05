@@ -77,7 +77,7 @@ def create(container, template='ubuntu', storage=None, xargs=None, guest_ip=None
 
         network_config_file = tempfile.NamedTemporaryFile(delete=False) # current not delete the config file in the /tmp
         network_config_file.write(
-            "lxc.network.type = veth\nlxc.network.flags = up\nlxc.network.link = lxcbr0\nlxc.network.ipv4 = {}".format(
+            "lxc.network.type = veth\nlxc.network.flags = up\nlxc.network.link = lxcbr0\nlxc.network.ipv4 = {}\n".format(
                 guest_ip))
         network_config_file.seek(0)
         network_config_file.close()
