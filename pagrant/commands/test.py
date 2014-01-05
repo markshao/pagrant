@@ -47,7 +47,7 @@ class TestCommand(Command):
         if "--newvm" in args and not args[0] == "--newvm":
             raise PagrantConfigError("The --newvm should before the nose test parameters")
 
-        nose_args = args[1:] if newvm else args
+        nose_args = args[1:] if "--newvm" in args else args
 
         if newvm:
             self.logger.warn("start init the virtual environment for the test execution")
