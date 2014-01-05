@@ -206,3 +206,18 @@ def checkconfig():
 def cgroup(container, key, value):
     if not exists(container): raise ContainerDoesntExists('Container {} does not exist!'.format(container))
     return _run('lxc-cgroup -n {} {} {}'.format(container, key, value))
+
+
+# code added by mark
+
+LXC_BRIDGE_NETWORK = 'lxcbr0'
+
+
+def network_list():
+    network_list_string = _run("ifconfig |grep Link|grep -v inet6|awk '{print $1}'", output=True)
+    return [network for network in network_list_string.split('\n') if network and len(network) > 0]
+
+
+def check_lxc_bridge():
+    return LXC_BRIDGE_NETWORK in network_list()
+
