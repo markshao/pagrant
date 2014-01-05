@@ -46,6 +46,9 @@ class ContainerAlreadyRunning(Exception): pass
 class ContainerNotRunning(Exception): pass
 
 
+class ContainerNetworkConfigError(Exception): pass
+
+
 def exists(container):
     '''
     Check if container exists
@@ -54,7 +57,7 @@ def exists(container):
     return False
 
 
-def create(container, template='ubuntu', storage=None, xargs=None):
+def create(container, template='ubuntu', storage=None, xargs=None, guest_ip=None):
     '''
     Create a container (without all options)
     Default template: Ubuntu
@@ -65,6 +68,21 @@ def create(container, template='ubuntu', storage=None, xargs=None):
     command += ' -t {}'.format(template)
     if storage: command += ' -B {}'.format(storage)
     if xargs: command += ' -- {}'.format(storage)
+
+    # mark add for guest ip
+    if guest_ip:
+        if not check_lxc_bridge():
+            raise ContainerNetworkConfigError("The network {} not existed \n".format(LXC_BRIDGE_NETWORK))
+        import tempfile
+
+        network_config_file = tempfile.NamedTemporaryFile(delete=False) # current not delete the config file in the /tmp
+        network_config_file.write(
+            "lxc.network.type = veth\nlxc.network.flags = up\nlxc.network.link = lxcbr0\nlxc.network.ipv4 = {}".format(
+                guest_ip))
+        network_config_file.seek(0)
+        network_config_file.close()
+
+        command += ' -f {}'.format(network_config_file.name)
 
     return _run(command)
 
