@@ -45,7 +45,7 @@ def parse_opts(args):
     general_options, args_else = main_parser.parse_args(args)
 
     if general_options.version:
-        sys.stdout.write("version {}".format(version_number()))
+        sys.stdout.write("version {}\n".format(version_number()))
         sys.exit()
 
     if not args_else or (args_else[0].lower() == 'help' and len(args_else) == 1):
