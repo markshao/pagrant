@@ -47,7 +47,11 @@ class TestCommand(Command):
         if "--newvm" in args and not args[0] == "--newvm":
             raise PagrantConfigError("The --newvm should before the nose test parameters")
 
-        nose_args = args[1:] if "--newvm" in args else args
+        nose_args = args[1:] if newvm else args
+
+        import sys
+
+        nose_argv = sys.argv[0:1] + nose_args # work around for the nose argv
 
         if newvm:
             self.logger.warn("start init the virtual environment for the test execution")
@@ -59,7 +63,7 @@ class TestCommand(Command):
         self.environment.init_test_context()
 
         try:
-            main(nose_args)
+            main(argv=nose_argv)
         except Exception, e:
             raise TestError("The nose test exception --- %s \n" % e.message)
         finally:
