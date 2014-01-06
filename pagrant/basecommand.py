@@ -72,8 +72,6 @@ class Command(object):
             options = None
 
         level = 1  # Notify
-        level += getattr(options, "verbose", 0)
-        level -= getattr(options, "verbose", 0)
         level = logger.level_for_integer(4 - level)
         complete_log = []
         logger.add_consumers(
