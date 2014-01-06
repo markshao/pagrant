@@ -81,6 +81,7 @@ general_group = {
     'name': 'General Options',
     'options': [
         help_,
+        version
         #log,
         #log_explicit_levels,
         #log_file

@@ -10,7 +10,7 @@ from pagrant.cmdparser import ConfigOptionParser, UpdatingDefaultsHelpFormatter
 from pagrant.exceptions import PagrantError, CommandError
 from pagrant.util import get_prog
 from pagrant import cmdoptions
-from pagrant.version import version_str
+from pagrant.version import version_number
 
 
 def create_main_parser():
@@ -20,7 +20,6 @@ def create_main_parser():
         'formatter': UpdatingDefaultsHelpFormatter(),
         'name': 'global',
         'prog': get_prog(),
-        'version': version_str()
     }
 
     parser = ConfigOptionParser(**parser_kw)
@@ -44,6 +43,10 @@ def parse_opts(args):
 
     # first get the general options
     general_options, args_else = main_parser.parse_args(args)
+
+    if general_options.version:
+        sys.stdout.write("version {}".format(version_number()))
+        sys.exit()
 
     if not args_else or (args_else[0].lower() == 'help' and len(args_else) == 1):
         main_parser.print_help()
