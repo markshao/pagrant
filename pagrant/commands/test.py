@@ -54,13 +54,14 @@ class TestCommand(Command):
         nose_argv = sys.argv[0:1] + nose_args # work around for the nose argv
 
         if newvm:
-            self.logger.warn("start init the virtual environment for the test execution")
+            self.logger.warn("start create the virtual environment for the test execution")
             self.environment.create_machines()
             self.environment.start_machines()
-            self.logger.warn("finish init the virtual environment for the test execution")
+            self.logger.warn("finish create the virtual environment for the test execution")
 
         # the init is always needed
         self.environment.init_test_context()
+        self.logger.warn("finish init the test-context for the test execution")
 
         try:
             main(argv=nose_argv)

@@ -4,6 +4,7 @@
 __author__ = 'markshao'
 
 import commands
+import time
 from pagrant.vmproviders import BaseProvider
 from pagrant.vendors import lxclite as lxc
 from pagrant.exceptions import VirtualBootstrapError, PagrantError
@@ -25,6 +26,7 @@ class LxcProvider(BaseProvider):
     def start_machine(self, machine_setting):
         if lxc.start(machine_setting['name']) == 0:
             self.logger.warn("Successfully start the vm [%s]" % machine_setting['name'])
+            time.sleep(10)  # Launchpad 1264338
         else:
             self.logger.error("Fail to start the vm [%s]" % machine_setting['name'])
             raise VirtualBootstrapError("Fail to start the vm [%s] " % machine_setting['name'])
