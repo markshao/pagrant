@@ -11,6 +11,7 @@ from pagrant.exceptions import PagrantError, CommandError
 from pagrant.util import get_prog
 from pagrant import cmdoptions
 from pagrant.version import version_number
+from pagrant.vendors.myoptparser.optparse import BadOptionError
 
 
 def create_main_parser():
@@ -80,6 +81,10 @@ def pagrant_main():
 
     try:
         cmd_name, cmd_args = parse_opts(args)
+    except BadOptionError, e:
+        sys.stderr.write(str(e))
+        sys.stderr.write(os.linesep)
+        sys.exit(1)
     except PagrantError:
         e = sys.exc_info()[1]
         sys.stderr.write("ERROR: %s" % e)
