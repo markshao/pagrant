@@ -1,21 +1,32 @@
-## Pagrant
+Fabric is a Python (2.5 or higher) library and command-line tool for
+streamlining the use of SSH for application deployment or systems
+administration tasks.
 
-- Website http://markshao.github.io/pagrant/
-- Source https://github.com/markshao/pagrant/
+It provides a basic suite of operations for executing local or remote shell
+commands (normally or via ``sudo``) and uploading/downloading files, as well as
+auxiliary functionality such as prompting the running user for input, or
+aborting execution.
 
-Pagrant is the tool for build your test cases on the cloud.
+Typical use involves creating a Python module containing one or more functions,
+then executing them via the ``fab`` command-line tool. Below is a small but
+complete "fabfile" containing a single task::
 
-Pagrant can help create the distributed test environment base on the LXC platform. The pagrant also support the plug-in mode to support the other cloud platform like AWS, vCloud,OpenStack ,etc. Pagrant use the nose as the execute engine for managing and executing the test cases/suites.
 
-## Install
+    from fabric.api import run
 
-##### Install from the source code.
+    def host_type():
+        run('uname -s')
 
-###
-    python setpy.py install
-    
+Once a task is defined, it may be run on one or more servers, like so::
 
-##### pip (it will support soon)
+    $ fab -H localhost,linuxbox host_type
+    [localhost] run: uname -s
+    [localhost] out: Darwin
+    [linuxbox] run: uname -s
+    [linuxbox] out: Linux
 
-###
-    pip install pagrant
+    Done.
+    Disconnecting from localhost... done.
+    Disconnecting from linuxbox... done.
+
+
