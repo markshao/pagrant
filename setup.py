@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-
 from pagrant.version import version_number
 
 setup(
