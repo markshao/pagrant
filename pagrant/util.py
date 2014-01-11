@@ -3,9 +3,11 @@
 
 __author__ = ['markshao']
 
-import os
 import sys
 import traceback
+
+import os
+
 
 try:
     from cStringIO import StringIO
@@ -74,3 +76,22 @@ def format_exc(exc_info=None):
     out = StringIO()
     traceback.print_exception(*exc_info, **dict(file=out))
     return out.getvalue()
+
+
+try:
+    from cPickle import load, dump
+except ImportError:
+    from pickle import load, dump
+
+
+def write_json_fd(dist, fpath):
+    f = open(fpath, "wb")
+    dump(dist, f)
+    f.close()
+
+
+def read_dict_fd(fpath):
+    f = open(fpath, "rb")
+    obj = load(f)
+    f.close()
+    return obj
