@@ -9,4 +9,4 @@ class InstallCommand(Command):
     summary = "help init the environment for the test"
 
     def __init__(self):
-        super(ListCommand, self).__init__()
+        super(InstallCommand, self).__init__()

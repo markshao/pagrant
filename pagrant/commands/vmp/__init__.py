@@ -13,59 +13,23 @@ __author__ = 'root'
 import sys
 
 from pagrant.basecommand import Command
-from pagrant import cmdoptions
-from pagrant.cmdparser import UpdatingDefaultsHelpFormatter, ConfigOptionParser
-from pagrant.commands.vmp.list import ListCommand
-from pagrant.commands.vmp.install import InstallCommand
-
-commands = {
-    ListCommand.name: ListCommand,
-    InstallCommand.name: InstallCommand
-}
-
-
-def get_summaries(ignore_hidden=True, ordered=True):
-    """Yields sorted (command name, command summary) tuples."""
-
-    cmditems = commands.items()
-
-    for name, command_class in cmditems:
-        if ignore_hidden and command_class.hidden:
-            continue
-        yield (name, command_class.summary)
+from pagrant.exceptions import CommandError
 
 
 class VmpCommand(Command):
     name = "vmprovider"
-    usage = """%prog """
+    usage = """%prog [command] [options]"""
     summary = "help init the environment for the test"
 
     def __init__(self):
         super(VmpCommand, self).__init__()
 
-        # recreate the parser
-        parser_kw = {
-            'usage': '\n%prog <command> [options]',
-            'add_help_option': False,
-            'formatter': UpdatingDefaultsHelpFormatter(),
-            'name': 'global',
-            'prog': "pagrant vmprovider",
-        }
-
-        parser = ConfigOptionParser(**parser_kw)
-        parser.disable_interspersed_args()
-
-        # add the general options
-        gen_opts = cmdoptions.make_option_group(cmdoptions.only_help_group, parser)
-        parser.add_option_group(gen_opts)
-
         # create command listing for description
         command_summaries = get_summaries()
         description = [''] + ['%-27s %s' % (i, j) for i, j in command_summaries]
-        parser.description = '\n'.join(description)
-        parser.main = True  # so the help formatter knows
+        self.parser.description = '\n'.join(description)
+        self.parser.main = True  # so the help formatter knows
 
-        self.parser = parser
 
     def setup_logging(self):
         pass
@@ -80,6 +44,36 @@ class VmpCommand(Command):
         # the subcommand name
         cmd_name = args[0].lower()
 
+        if cmd_name not in commands:
+            raise CommandError("The command {} is not support by the vmprovider".format(cmd_name))
+
         #all the args without the subcommand
         cmd_args = args[:]
         cmd_args.remove(args_else[0].lower())
+
+        command = commands[cmd_name]()
+        try:
+            command.run(cmd_args)
+        except Exception, ex:
+            pass
+
+
+# solve the loop import issue
+from pagrant.commands.vmp.list import ListCommand
+from pagrant.commands.vmp.install import InstallCommand
+
+commands = {
+    ListCommand.name: ListCommand,
+    InstallCommand.name: InstallCommand
+}
+
+
+def get_summaries(ignore_hidden=True):
+    """Yields sorted (command name, command summary) tuples."""
+
+    cmditems = commands.items()
+
+    for name, command_class in cmditems:
+        if ignore_hidden and command_class.hidden:
+            continue
+        yield (name, command_class.summary)
