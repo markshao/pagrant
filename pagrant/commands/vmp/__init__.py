@@ -13,7 +13,7 @@ __author__ = 'root'
 import sys
 
 from pagrant.basecommand import Command
-from pagrant.exceptions import CommandError
+from pagrant.exceptions import CommandError, PagrantError
 
 
 class VmpCommand(Command):
@@ -35,9 +35,8 @@ class VmpCommand(Command):
         pass
 
     def run(self, args):
-        options, args_else = self.parse_args(args)
 
-        if not args_else or (args_else[0].lower() == 'help' and len(args_else) == 1):
+        if not args or (args[0].lower() == 'help' and len(args) == 1):
             self.parser.print_help()
             sys.exit()
 
@@ -49,12 +48,13 @@ class VmpCommand(Command):
 
         #all the args without the subcommand
         cmd_args = args[:]
-        cmd_args.remove(args_else[0].lower())
+        cmd_args.remove(args[0].lower())
 
         command = commands[cmd_name]()
+        command.logger = self.logger # copy the logger from outside -> inside
         try:
             command.run(cmd_args)
-        except Exception, ex:
+        except PagrantError, error:
             pass
 
 

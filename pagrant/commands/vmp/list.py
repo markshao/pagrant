@@ -17,9 +17,6 @@ class ListCommand(Command):
     def __init__(self):
         super(ListCommand, self).__init__()
 
-    def setup_logging(self):
-        pass
-
     def run(self, args):
         sys.stdout.write("pagrant native support list:")
         sys.stdout.write(os.linesep)
