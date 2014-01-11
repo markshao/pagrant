@@ -87,3 +87,10 @@ general_group = {
         #log_file
     ]
 }
+
+only_help_group = {
+    'name': 'General Options',
+    'options': [
+        help_,
+    ]
+}
