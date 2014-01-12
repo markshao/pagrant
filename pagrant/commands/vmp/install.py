@@ -9,16 +9,17 @@ from pagrant.exceptions import CommandError
 class InstallCommand(Command):
     name = "install"
     usage = """%prog """
-    summary = "help init the environment for the test"
+    summary = "install the vmprovider from the repository"
 
     def __init__(self):
         super(InstallCommand, self).__init__()
+
         self.parser.add_option(Option(
             '--index-url',
             dest='index_url',
             action='store',
             default=None,
-            help="change the source for the vmprovider existed"
+            help="change the source for the vmproviders repository"
         ))
 
     def run(self, args):

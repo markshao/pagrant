@@ -12,12 +12,14 @@ DEFAULT_BLANK = 30
 class ListCommand(Command):
     name = "list"
     usage = """%prog """
-    summary = "help init the environment for the test"
+    summary = "list all the installed vmproviders"
 
     def __init__(self):
         super(ListCommand, self).__init__()
 
     def run(self, args):
+        self.parse_args(args)  # WORK AROUND
+
         sys.stdout.write("pagrant native support list:")
         sys.stdout.write(os.linesep)
         for k, v in providers.items():

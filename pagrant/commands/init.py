@@ -3,10 +3,10 @@
 
 __author__ = 'markshao'
 
-import os
 import sys
 import shutil
 
+import os
 from pagrant.basecommand import Command
 from pagrant.util import get_userinput, is_true
 from pagrant.globalsettings import PAGRANT_CONFIG_TEMPLATE_PATH
@@ -18,7 +18,7 @@ PAGRANT_CONFIG_FILE_NAME = "Pagrantfile"
 class InitCommand(Command):
     name = "init"
     usage = """%prog """
-    summary = "help init the environment for the test"
+    summary = "init the Pagrantfile for the test"
 
     def __init__(self):
         super(InitCommand, self).__init__()

@@ -19,7 +19,8 @@ from pagrant.exceptions import CommandError, PagrantError
 class VmpCommand(Command):
     name = "vmprovider"
     usage = """%prog [command] [options]"""
-    summary = "help init the environment for the test"
+    summary = "vmproviers management command , plese use [pagrant vmprovider --help] to see the detail usage"
+    skip_parse = True
 
     def __init__(self):
         super(VmpCommand, self).__init__()
@@ -29,6 +30,8 @@ class VmpCommand(Command):
         description = [''] + ['%-27s %s' % (i, j) for i, j in command_summaries]
         self.parser.description = '\n'.join(description)
         self.parser.main = True  # so the help formatter knows
+
+        self.skip_parse = True
 
 
     def setup_logging(self):
@@ -61,10 +64,12 @@ class VmpCommand(Command):
 # solve the loop import issue
 from pagrant.commands.vmp.list import ListCommand
 from pagrant.commands.vmp.install import InstallCommand
+from pagrant.commands.vmp.remove import RemoveCommand
 
 commands = {
     ListCommand.name: ListCommand,
-    InstallCommand.name: InstallCommand
+    InstallCommand.name: InstallCommand,
+    RemoveCommand.name: RemoveCommand
 }
 
 
