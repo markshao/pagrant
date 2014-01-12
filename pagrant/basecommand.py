@@ -70,7 +70,7 @@ class Command(object):
 
         try:
             options = None
-            if not self.skip_parse or args[0] in ("-h", "--help"):
+            if not self.skip_parse or len(args) == 0 or args[0] in ("-h", "--help"):
                 options, args = self.parse_args(args)
         except (optparse.OptionError, optparse.BadOptionError), e:
             options = None
