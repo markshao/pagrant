@@ -4,13 +4,19 @@
 __author__ = ['markshao']
 
 import copy
+import time
+
+import paramiko
 from pagrant.pagrantfile import ContextConfig
 from pagrant.exceptions import VirtualBootstrapError
 from pagrant.vmproviders import providers_class_map
 from pagrant.machine import STATUS, Machine
 from pagrant.test import test_context
 
+
 # each test contains a environment for test
+
+SSH_TIMEOUT = 60 * 5
 
 
 class Environment(object):
@@ -28,6 +34,7 @@ class Environment(object):
 
         self._vmprovider = vmprovider_class(self.context_config.get_vmprovider_config(), self.logger)
         self.machines_info = copy.deepcopy(self.context_config.get_machine_settings())
+        self.machines = None  # store all the machines
 
     @property
     def vmprovider(self):
@@ -100,3 +107,28 @@ class Environment(object):
 
         # init the test context
         test_context.set_machines(machines)
+
+        # set the machines to the environment
+        self.machines = machines
+
+    def check_machine_ssh(self):
+        self.logger.warn("check the ssh accessible for the machines")
+        for machine_name, machine in self.machines.items():
+            start_time = time.time()
+            self.logger.start_progress("start check the %s for ssh ready" % machine_name)
+            while True:
+                ssh = paramiko.SSHClient()
+                ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                try:
+                    ssh.connect(machine.host, 22, machine.username, machine.password, timeout=20)
+                    self.logger.end_progress()
+                    break   #if no error throwed
+                except Exception, e:
+                    duration = time.time() - start_time
+                    if duration > SSH_TIMEOUT:
+                        self.logger.end_progress()
+                        raise VirtualBootstrapError("The machine %s could not been normally startup" % machine_name)
+                    else:
+                        self.logger.show_progress("wait %s seconds for the %s to ready" % (duration, machine_name))
+                        time.sleep(5)
+                        continue
