@@ -62,6 +62,7 @@ class TestCommand(Command):
         # the init is always needed
         self.environment.init_test_context()
         self.logger.warn("finish init the test-context for the test execution")
+        self.environment.check_machine_ssh()
 
         try:
             main(argv=nose_argv)

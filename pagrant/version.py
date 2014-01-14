@@ -3,7 +3,7 @@
 
 __author__ = ['markshao']
 
-__version__ = "1.0"
+__version__ = "1.0.1"
 
 
 def version_number():

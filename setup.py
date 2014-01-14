@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-
 from pagrant.version import version_number
 
 setup(
@@ -7,13 +6,12 @@ setup(
     version=version_number(),
     url='https://github.com/markshao/pagrant',
     license='MIT',
-    author='markshao,yilan',
+    author='markshao,xiaobo',
     author_email='mark.shao@emc.com',
     description='a distributed test framework',
     scripts=['bin/pagrant'],
     classifiers=[
         "Programming Language :: Python",
-        "Topic :: Software Developement :: Libraries :: Python Modules",
     ],
     platforms='any',
     keywords='framework nose testing',

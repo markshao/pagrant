@@ -44,6 +44,8 @@ class Command(object):
 
         self.logger = None
 
+        self.skip_parse = False
+
     def setup_logging(self):
         pass
 
@@ -67,7 +69,9 @@ class Command(object):
         args_bk = copy.deepcopy(args)
 
         try:
-            options, args = self.parse_args(args)
+            options = None
+            if not self.skip_parse or len(args) == 0 or args[0] in ("-h", "--help"):
+                options, args = self.parse_args(args)
         except (optparse.OptionError, optparse.BadOptionError), e:
             options = None
 
