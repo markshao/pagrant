@@ -6,8 +6,13 @@ __author__ = ['markshao']
 # pagrant version
 PAGRANT_VERSION = "1.0"
 
-# the provider for the usage
-vmprovider = "lxc"
+
+def vmprovider():
+    return {
+        # "path": "/home/xiaobo/vmproviders",
+        # "name": "lxc",
+        "type": "lxc" # Determines whether or not to enable the local VM provider
+    }
 
 
 def vmprovider_config():
@@ -29,3 +34,4 @@ def machine_settings():
     }
 
     return machines
+

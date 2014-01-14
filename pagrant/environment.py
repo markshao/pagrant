@@ -9,6 +9,8 @@ from pagrant.exceptions import VirtualBootstrapError
 from pagrant.vmproviders import providers_class_map
 from pagrant.machine import STATUS, Machine
 from pagrant.test import test_context
+from pagrant.importer import import_module_ext
+from pagrant.importer import import_module
 
 # each test contains a environment for test
 
@@ -22,7 +24,14 @@ class Environment(object):
 
         # decide the vmprovider to user
         vmprovider_type = self.context_config.get_vmprovider_type()
-        vmprovider_class = providers_class_map.get(vmprovider_type)
+        
+        if vmprovider_type == "local":
+            vmprovider_path = self.context_config.get_vmprovider_path()
+            vmprovider_init = import_module_ext(vmprovider_path)
+            vmprovider_action = import_module(vmprovider_init.provider_action_module, vmprovider_path)
+            vmprovider_class = vmprovider_action.LxcProvider
+        else:
+            vmprovider_class = providers_class_map.get(vmprovider_type)
 
         self.vmprovider_config = self.context_config.get_vmprovider_config()
 

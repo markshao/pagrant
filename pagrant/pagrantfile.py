@@ -1,13 +1,12 @@
 #!/usr/bin/python
 #coding:utf8
 
-__author__ = 'markshao'
+__author__ = ['markshao']
 
 import imp
 import os
 
 from pagrant.exceptions import PagrantConfigError
-from pagrant.vmproviders import providers
 
 
 PAGRANTFILE_MODULE = "Pagrantfile"
@@ -39,12 +38,15 @@ class ContextConfig(object):
 
     def get_vmprovider_type(self):
         vmprovider_type = self.pagrant_file_module.vmprovider
-        if vmprovider_type not in providers:
-            raise PagrantConfigError("""
-The vmprovider is not support by the pagrant right\n
-Please first check the vmprovider list through the command: pagrant vmprovider\n""")
+        #         if vmprovider_type not in providers:
+        #             raise PagrantConfigError("""
+        # The vmprovider is not support by the pagrant right\n
+        # Please first check the vmprovider list through the command: pagrant vmprovider\n""")
 
         return vmprovider_type
 
     def get_vmprovider_config(self):
         return self.pagrant_file_module.vmprovider_config()
+
+    def get_vmprovider_path(self):
+        return self.pagrant_file_module.vmprovider_path
