@@ -23,15 +23,16 @@ class Environment(object):
         self.logger = logger
 
         # decide the vmprovider to user
-        vmprovider_type = self.context_config.get_vmprovider_type()
-        
-        if vmprovider_type == "local":
-            vmprovider_path = self.context_config.get_vmprovider_path()
-            vmprovider_init = import_module_ext(vmprovider_path)
-            vmprovider_action = import_module(vmprovider_init.provider_action_module, vmprovider_path)
+        vmprovider = self.context_config.get_vmprovider()
+
+        if vmprovider.get("type") == "local":
+            vmprovider_path = vmprovider.get("path")
+            vmprovider_name = vmprovider.get("name")
+            vmprovider_init = import_module(vmprovider_name, vmprovider_path)
+            vmprovider_action = import_module(vmprovider_init.provider_action_module, vmprovider_path + "/" + vmprovider_name)
             vmprovider_class = vmprovider_action.LxcProvider
         else:
-            vmprovider_class = providers_class_map.get(vmprovider_type)
+            vmprovider_class = providers_class_map.get(vmprovider.get("type"))
 
         self.vmprovider_config = self.context_config.get_vmprovider_config()
 

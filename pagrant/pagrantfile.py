@@ -48,5 +48,5 @@ class ContextConfig(object):
     def get_vmprovider_config(self):
         return self.pagrant_file_module.vmprovider_config()
 
-    def get_vmprovider_path(self):
-        return self.pagrant_file_module.vmprovider_path
+    def get_vmprovider(self):
+        return self.pagrant_file_module.vmprovider()
