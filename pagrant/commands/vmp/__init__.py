@@ -61,6 +61,36 @@ class VmpCommand(Command):
             pass
 
 
+# The following code is used for handling the third party vmproviders
+
+import os
+from pagrant.globalsettings import VMPROVIDER_LIST_DICT
+from pagrant.util import read_dict_fd, write_json_fd
+
+
+def check_vmprovider_file():
+    return os.path.exists(VMPROVIDER_LIST_DICT)
+
+
+def check_vmprovider_existed(vmprovider_name):
+    if check_vmprovider_file():
+        current_vm_dict = read_dict_fd(VMPROVIDER_LIST_DICT)
+        return vmprovider_name in current_vm_dict
+    else:
+        return False
+
+
+def get_installed_vmproviders():
+    if check_vmprovider_file():
+        return read_dict_fd(VMPROVIDER_LIST_DICT)
+    else:
+        return {}
+
+
+def add_into_vmprovider_dict(vmprovider_name, **kwargs):
+    dist = {vmprovider_name: kwargs}
+    write_json_fd(dist, VMPROVIDER_LIST_DICT)
+
 # solve the loop import issue
 from pagrant.commands.vmp.list import ListCommand
 from pagrant.commands.vmp.install import InstallCommand

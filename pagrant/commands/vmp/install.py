@@ -3,7 +3,7 @@ __author__ = 'root'
 from pip import main
 from pagrant.basecommand import Command
 from pagrant.vendors.myoptparser.optparse import Option
-from pagrant.exceptions import CommandError
+from pagrant.exceptions import CommandError, VmProviderError
 
 
 class InstallCommand(Command):
@@ -28,11 +28,27 @@ class InstallCommand(Command):
         if not arg_else or len(arg_else) != 1:
             raise CommandError("the vmprovider name is empty , could install it \n")
 
-        install_commands = ["install", arg_else[0]]
+        from pagrant.commands.vmp import check_vmprovider_existed, add_into_vmprovider_dict
 
-        if options.index_url:
-            install_commands.extend(["--index-url", options.index_url])
+        vmprovider_name = arg_else[0]
 
-        self.logger.warn("start install the vmprovider [{}]".format(arg_else[0]))
-        main(install_commands)
-        self.logger.warn("finish install the new provider")
+        if not check_vmprovider_existed(vmprovider_name):
+            install_commands = ["install", vmprovider_name]
+
+            if options.index_url:
+                install_commands.extend(["--index-url", options.index_url])
+
+            install_commands.extend(["-q"]) # make it quiet for output
+
+            self.logger.warn("start install the vmprovider [{}]".format(arg_else[0]))
+            exit_code = main(install_commands)
+
+            if exit_code != 0:
+                raise VmProviderError("Fail to install the vmprovier %s" % vmprovider_name)
+
+            self.logger.warn("finish install the new provider")
+
+            # persistant the info into the .vmprovider_dict
+            add_into_vmprovider_dict(vmprovider_name)
+        else:
+            self.logger.warn("The vmprovider %s has already been installed " % vmprovider_name)

@@ -4,6 +4,7 @@ import sys
 import os
 from pagrant.basecommand import Command
 from pagrant.vmproviders import providers
+from pagrant.commands.vmp import get_installed_vmproviders
 
 
 DEFAULT_BLANK = 30
@@ -20,7 +21,7 @@ class ListCommand(Command):
     def run(self, args):
         self.parse_args(args)  # WORK AROUND
 
-        sys.stdout.write("pagrant native support list:")
+        sys.stdout.write("Native supported List:")
         sys.stdout.write(os.linesep)
         for k, v in providers.items():
             sys.stdout.write(" " * 6)
@@ -28,6 +29,19 @@ class ListCommand(Command):
             self._print_blank(k)
             sys.stdout.write(v)
             sys.stdout.write(os.linesep)
+
+            # third party
+        sys.stdout.write(os.linesep)
+        sys.stdout.write("Third-party installed list:")
+        sys.stdout.write(os.linesep)
+
+        for k, v in get_installed_vmproviders().items():
+            sys.stdout.write(" " * 6)
+            sys.stdout.write(k)
+            self._print_blank(k)
+            sys.stdout.write(getattr(v, "summary", "Nothing"))
+            sys.stdout.write(os.linesep)
+
 
     def _print_blank(self, k):
         need_blank = DEFAULT_BLANK - len(k)

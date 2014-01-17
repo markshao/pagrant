@@ -27,6 +27,13 @@ class VirtualBootstrapError(PagrantError):
     pass
 
 
+class VmProviderError(PagrantError):
+    """
+        The virtual boostrap error
+    """
+    pass
+
+
 class TestError(PagrantError):
     """
         Nose Test Error
