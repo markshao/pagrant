@@ -32,13 +32,13 @@ class InstallCommand(Command):
 
         vmprovider_name = arg_else[0]
 
-        if not check_vmprovider_existed(vmprovider_name):
+        if check_vmprovider_existed(vmprovider_name):
             install_commands = ["install", vmprovider_name]
 
             if options.index_url:
                 install_commands.extend(["--index-url", options.index_url])
 
-            install_commands.extend(["-q"]) # make it quiet for output
+            # install_commands.extend(["-q"])  # make it quiet for output
 
             self.logger.warn("start install the vmprovider [{}]".format(arg_else[0]))
             exit_code = main(install_commands)
@@ -48,7 +48,14 @@ class InstallCommand(Command):
 
             self.logger.warn("finish install the new provider")
 
+            try:
+                module = __import__(vmprovider_name)
+            except ImportError:
+                raise VmProviderError("Could not load the module %s" % vmprovider_name)
+
             # persistant the info into the .vmprovider_dict
-            add_into_vmprovider_dict(vmprovider_name)
+            dist = {"summary": getattr(module, "summary", "nothing")}
+
+            add_into_vmprovider_dict(vmprovider_name, **dist)
         else:
             self.logger.warn("The vmprovider %s has already been installed " % vmprovider_name)
