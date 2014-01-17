@@ -54,7 +54,7 @@ class InstallCommand(Command):
                 raise VmProviderError("Could not load the module %s" % vmprovider_name)
 
             # persistant the info into the .vmprovider_dict
-            dist = {"summary": getattr(module, "summary", "nothing")}
+            dist = {"summary": getattr(module, "provider_summary", "nothing")}
 
             add_into_vmprovider_dict(vmprovider_name, **dist)
         else:

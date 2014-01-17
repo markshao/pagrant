@@ -32,14 +32,14 @@ class ListCommand(Command):
 
             # third party
         sys.stdout.write(os.linesep)
-        sys.stdout.write("Third-party installed list:")
+        sys.stdout.write("Third-party installed List:")
         sys.stdout.write(os.linesep)
 
         for k, v in get_installed_vmproviders().items():
             sys.stdout.write(" " * 6)
             sys.stdout.write(k)
             self._print_blank(k)
-            sys.stdout.write(v.get("summary", "nothing"))
+            sys.stdout.write(v.get("provider_summary", "nothing"))
             sys.stdout.write(os.linesep)
 
 
