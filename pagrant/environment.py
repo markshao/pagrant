@@ -51,10 +51,10 @@ class Environment(object):
         return self._vmprovider
 
     def create_machines(self):
-        self._vmprovider.create_machiens(self.machines_info)
+        self._vmprovider.create_machines(self.machines_info)
 
     def start_machines(self):
-        self._vmprovider.start_machiens(self.machines_info)
+        self._vmprovider.start_machines(self.machines_info)
 
     def stop_machines(self):
         self._vmprovider.stop_machines(self.machines_info)
