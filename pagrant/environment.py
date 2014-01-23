@@ -39,7 +39,7 @@ class Environment(object):
             vmprovider_action = import_module(vmprovider_init.provider_action_module,
                                               vmprovider_path + "/" + vmprovider_name)
             vmprovider_class = vmprovider_action.LxcProvider
-        elif not vmprovider.get("type") in providers_class_map:
+        elif vmprovider.get("type") in providers_class_map:
             vmprovider_class = providers_class_map.get(vmprovider.get("type"))
         elif vmprovider.get("type") in get_installed_vmproviders():
             vmprovider_class = load_entry_point(vmprovider.get("type"), "PAGRANT", "VMPROVIDER")
