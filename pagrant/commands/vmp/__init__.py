@@ -91,6 +91,10 @@ def add_into_vmprovider_dict(vmprovider_name, **kwargs):
     dist = {vmprovider_name: kwargs}
     write_json_fd(dist, VMPROVIDER_LIST_DICT)
 
+# ENTRY_POINT REALTED
+EP_GROUP = "PAGRANT"
+EP_NAME = "VMPROVIDER   "
+
 # solve the loop import issue
 from pagrant.commands.vmp.list import ListCommand
 from pagrant.commands.vmp.install import InstallCommand

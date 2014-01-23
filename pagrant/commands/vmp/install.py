@@ -4,6 +4,7 @@ from pip import main
 from pagrant.basecommand import Command
 from pagrant.vendors.myoptparser.optparse import Option
 from pagrant.exceptions import CommandError, VmProviderError
+from pagrant.vmproviders import providers_class_map
 
 
 class InstallCommand(Command):
@@ -33,8 +34,10 @@ class InstallCommand(Command):
         vmprovider_name = arg_else[0]
 
         if check_vmprovider_existed(vmprovider_name):
-            install_commands = ["install", vmprovider_name]
+            if vmprovider_name in providers_class_map:
+                raise VmProviderError("The vmprovider has already support by the pagrant itself")
 
+            install_commands = ["install", vmprovider_name]
             if options.index_url:
                 install_commands.extend(["--index-url", options.index_url])
 

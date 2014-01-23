@@ -16,16 +16,16 @@ class BaseProvider(object):
         self.logger = logger
         self.provider_info = provider_info
 
-    def create_machine(self, machine_setting):
+    def create_machines(self, machine_settings):
         NotImplemented
 
-    def start_machine(self, machine_setting):
+    def start_machines(self, machine_settings):
         NotImplemented
 
-    def stop_machine(self, machine_setting):
+    def stop_machines(self, machine_settings):
         NotImplemented
 
-    def destroy_machine(self, machine_setting):
+    def destroy_machines(self, machine_settings):
         NotImplemented
 
     def get_machine_ip(self, machine_setting):
