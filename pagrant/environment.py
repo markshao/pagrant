@@ -7,12 +7,14 @@ import copy
 import time
 
 import paramiko
+from pkg_resources import load_entry_point
 from pagrant.pagrantfile import ContextConfig
-from pagrant.exceptions import VirtualBootstrapError
+from pagrant.exceptions import VirtualBootstrapError, PagrantConfigError
 from pagrant.vmproviders import providers_class_map
 from pagrant.machine import Machine
 from pagrant.test import test_context
 from pagrant.importer import import_module
+from pagrant.commands.vmp import get_installed_vmproviders
 
 
 # each test contains a environment for test
@@ -37,8 +39,12 @@ class Environment(object):
             vmprovider_action = import_module(vmprovider_init.provider_action_module,
                                               vmprovider_path + "/" + vmprovider_name)
             vmprovider_class = vmprovider_action.LxcProvider
-        else:
+        elif not vmprovider.get("type") in providers_class_map:
             vmprovider_class = providers_class_map.get(vmprovider.get("type"))
+        elif vmprovider.get("type") in get_installed_vmproviders():
+            vmprovider_class = load_entry_point(vmprovider.get("type"), "PAGRANT", "VMPROVIDER")
+        else:
+            raise PagrantConfigError("The vmprovider is not support by the system")
 
         self.vmprovider_config = self.context_config.get_vmprovider_config()
 
