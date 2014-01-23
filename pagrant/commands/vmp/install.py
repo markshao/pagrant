@@ -1,10 +1,10 @@
 __author__ = 'root'
 
 from pip import main
+from pkg_resources import load_entry_point
 from pagrant.basecommand import Command
 from pagrant.vendors.myoptparser.optparse import Option
 from pagrant.exceptions import CommandError, VmProviderError
-from pagrant.vmproviders import providers_class_map
 
 
 class InstallCommand(Command):
@@ -33,9 +33,9 @@ class InstallCommand(Command):
 
         vmprovider_name = arg_else[0]
 
-        if check_vmprovider_existed(vmprovider_name):
-            if vmprovider_name in providers_class_map:
-                raise VmProviderError("The vmprovider has already support by the pagrant itself")
+        if not check_vmprovider_existed(vmprovider_name):
+            # if vmprovider_name in providers_class_map:
+            #     raise VmProviderError("The vmprovider has already support by the pagrant itself")
 
             install_commands = ["install", vmprovider_name]
             if options.index_url:
@@ -51,13 +51,10 @@ class InstallCommand(Command):
 
             self.logger.warn("finish install the new provider")
 
-            try:
-                module = __import__(vmprovider_name)
-            except ImportError:
-                raise VmProviderError("Could not load the module %s" % vmprovider_name)
-
             # persistant the info into the .vmprovider_dict
-            dist = {"summary": getattr(module, "provider_summary", "nothing")}
+            # get the provider_summary from pkg_resource
+            project_info = load_entry_point(vmprovider_name, "PAGRANT", "VMPROVIDER_INFO")()
+            dist = {'summary': project_info['provider_summary']}
 
             add_into_vmprovider_dict(vmprovider_name, **dist)
         else:

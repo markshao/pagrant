@@ -39,7 +39,7 @@ class ListCommand(Command):
             sys.stdout.write(" " * 6)
             sys.stdout.write(k)
             self._print_blank(k)
-            sys.stdout.write(v.get("provider_summary", "nothing"))
+            sys.stdout.write(v.get("summary", "nothing"))
             sys.stdout.write(os.linesep)
 
 
