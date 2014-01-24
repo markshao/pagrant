@@ -3,6 +3,7 @@ __author__ = 'root'
 from pip import main
 from pagrant.basecommand import Command
 from pagrant.exceptions import CommandError
+from pagrant.commands.vmp import remove_vmprovider_dict
 
 
 class RemoveCommand(Command):
@@ -23,4 +24,5 @@ class RemoveCommand(Command):
 
         self.logger.warn("start remove the vmprovider [{}]".format(arg_else[0]))
         main(remove_commands)
+        remove_vmprovider_dict(arg_else[0])
         self.logger.warn("finish remove the new provider")

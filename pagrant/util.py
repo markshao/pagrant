@@ -85,6 +85,8 @@ except ImportError:
 
 
 def write_json_fd(dist, fpath):
+    if os.path.exists(fpath):
+        os.remove(fpath)
     f = open(fpath, "wb")
     dump(dist, f)
     f.close()

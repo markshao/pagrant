@@ -88,8 +88,17 @@ def get_installed_vmproviders():
 
 
 def add_into_vmprovider_dict(vmprovider_name, **kwargs):
-    dist = {vmprovider_name: kwargs}
+    dist = get_installed_vmproviders()
+    dist[vmprovider_name] = kwargs
     write_json_fd(dist, VMPROVIDER_LIST_DICT)
+
+
+def remove_vmprovider_dict(vmprovider_name):
+    dist = get_installed_vmproviders()
+    if vmprovider_name in dist:
+        del dist[vmprovider_name]
+    write_json_fd(dist, VMPROVIDER_LIST_DICT)
+
 
 # ENTRY_POINT REALTED
 EP_GROUP = "PAGRANT"
