@@ -79,7 +79,7 @@ class Environment(object):
                     raise VirtualBootstrapError("could not get the ip")
                 self.logger.warn("The machine %s ip is [%s] " % (machine_name, machine["ip"]))
 
-            _m = Machine(machine["ip"], self.vmprovider_config["username"], self.vmprovider_config["password"])
+            _m = Machine(machine["ip"], self.vmprovider_config["ssh_username"], self.vmprovider_config["ssh_password"])
             machines[machine_name] = _m
 
         # init the test context
@@ -99,7 +99,7 @@ class Environment(object):
                 try:
                     ssh.connect(machine.host, 22, machine.username, machine.password, timeout=20)
                     self.logger.end_progress()
-                    break   #if no error throwed
+                    break   # if no error throwed
                 except Exception, e:
                     duration = time.time() - start_time
                     if duration > SSH_TIMEOUT:
