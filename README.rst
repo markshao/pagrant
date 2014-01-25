@@ -12,8 +12,8 @@ Pagrant support lxc by default. You can directly create the multiple test machin
 
 Install
 =======
-
-    pip install pagrant
+.. code-block::
+pip install pagrant
 
 Vmprovider management
 =====================
