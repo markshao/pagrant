@@ -23,17 +23,20 @@ Pagrant provider a bundle of command lines to manage the vmprovider.
 
 List all the vmproviders installed
 ----------------------------------
-    pagrant vmprovider list
+.. code-block::
+pagrant vmprovider list
 
 
 Install the vmprovider
 ----------------------
-    pagrant vmprovider install [vmprovider name]
+.. code-block::
+pagrant vmprovider install [vmprovider name]
 
 
 Uninstall the vmprovider
 ------------------------
-    pagrant vmprovider remove [vmprovider name]
+.. code-block::
+pagrant vmprovider remove [vmprovider name]
 
 
 
