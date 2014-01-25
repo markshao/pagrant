@@ -9,7 +9,9 @@ from pagrant.vmproviders import BaseProvider
 from pagrant.vendors import lxclite as lxc
 from pagrant.exceptions import VirtualBootstrapError, PagrantError
 
-IP_COMMAND = "awk '{ print $4,$3 }' /var/lib/misc/dnsmasq.leases | column -t | grep %s |awk '{print $2}'"
+IP_COMMAND_0 = "awk '{ print $4,$3 }' /var/lib/misc/dnsmasq.leases | column -t | grep %s |awk '{print $2}'"
+
+IP_COMMAND_1 = "lxc-ls --fancy|grep %s|awk '{print $3}'"  # lxc version: 1.0.0.alpha1
 
 
 class LxcProvider(BaseProvider):
@@ -53,8 +55,14 @@ class LxcProvider(BaseProvider):
 
 
     def get_machine_ip(self, machine_setting):
-        result = commands.getstatusoutput(IP_COMMAND % machine_setting['name'])
-        if not result[0] == 0:
-            raise PagrantError("execute the ip command fail")
+        version = commands.getoutput("lxc-version|awk '{print $3}'")
+
+        if version.startswith("1.0"):
+            results = commands.getstatusoutput(IP_COMMAND_1 % machine_setting["name"])
         else:
-            return result[1]
+            results = commands.getstatusoutput(IP_COMMAND_0 % machine_setting["name"])
+
+        if not results[0] == 0:
+            raise PagrantError("Could not get the ip")
+
+        return results[1]
