@@ -12,6 +12,8 @@ from pagrant.basecommand import Command
 from pagrant.commands.init import PAGRANT_CONFIG_FILE_NAME
 from pagrant.environment import Environment
 from pagrant.exceptions import PagrantConfigError, TestError
+from pagrant.version import version_number
+from pagrant.util import msg
 
 
 class TestCommand(Command):
@@ -51,24 +53,32 @@ class TestCommand(Command):
 
         import sys
 
-        nose_argv = sys.argv[0:1] + nose_args # work around for the nose argv
+        nose_argv = sys.argv[0:1] + nose_args  # work around for the nose argv
 
         if newvm:
-            self.logger.warn("start create the virtual environment for the test execution")
+            self.print_context_log()
             self.environment.create_machines()
             self.environment.start_machines()
-            self.logger.warn("finish create the virtual environment for the test execution")
+            self.logger.info(msg("finish create the test environment"))
 
         # the init is always needed
         self.environment.init_test_context()
-        self.logger.warn("finish init the test-context for the test execution")
         self.environment.check_machine_ssh()
-
+        self.logger.info(msg("start test"))
         try:
             main(argv=nose_argv)
         except Exception, e:
             raise TestError("The nose test exception --- %s \n" % e.message)
         finally:
             if newvm:
+                self.logger.info(
+                    msg("clean the environment, delete the machines %s") % self.environment.machines_info.keys())
                 self.environment.stop_machines()
                 self.environment.destroy_machines()
+                self.logger.info(msg("Done"))
+
+    def print_context_log(self):
+        self.logger.info(msg("pagrant version %s" % version_number()))
+        self.logger.info(msg("using vmprovider [%s]" % self.environment.vmprovider_type))
+        self.logger.info(
+            msg("create the test environment with the machines %s" % self.environment.machines_info.keys()))

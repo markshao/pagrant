@@ -21,38 +21,38 @@ class LxcProvider(BaseProvider):
         for machine_name, machine_setting in machine_settings.items():
             if lxc.create(machine_setting['name'], template=machine_setting['template'],
                           guest_ip=machine_setting["ip"]) == 0:
-                self.logger.warn("Finish create the machine [%s]" % machine_setting['name'])
+                pass
+                # self.logger.warn("Finish create the machine [%s]" % machine_setting['name'])
             else:
-                self.logger.error("Fail to create the vm [%s]" % machine_setting['name'])
+                # self.logger.error("Fail to create the vm [%s]" % machine_setting['name'])
                 raise VirtualBootstrapError("Fail to create the vm [%s] " % machine_setting['name'])
 
     def start_machines(self, machine_settings):
         for machine_name, machine_setting in machine_settings.items():
             if lxc.start(machine_setting['name']) == 0:
-                self.logger.warn("Successfully start the vm [%s]" % machine_setting['name'])
+                # self.logger.warn("Successfully start the vm [%s]" % machine_setting['name'])
                 time.sleep(10)  # Launchpad 1264338
             else:
-                self.logger.error("Fail to start the vm [%s]" % machine_setting['name'])
+                # self.logger.error("Fail to start the vm [%s]" % machine_setting['name'])
                 raise VirtualBootstrapError("Fail to start the vm [%s] " % machine_setting['name'])
-
 
     def stop_machines(self, machine_settings):
         for machine_name, machine_setting in machine_settings.items():
             if lxc.stop(machine_setting['name']) == 0:
-                self.logger.warn("Successfully stop the vm [%s]" % machine_setting['name'])
+                pass
+                # self.logger.warn("Successfully stop the vm [%s]" % machine_setting['name'])
             else:
-                self.logger.error("Fail to stop the vm [%s]" % machine_setting['name'])
+                # self.logger.error("Fail to stop the vm [%s]" % machine_setting['name'])
                 raise VirtualBootstrapError("Fail to stop the vm [%s] " % machine_setting['name'])
-
 
     def destroy_machines(self, machine_settings):
         for machine_name, machine_setting in machine_settings.items():
             if lxc.destroy(machine_setting['name']) == 0:
-                self.logger.warn("Successfully destroy the vm [%s]" % machine_setting['name'])
+                pass
+                # self.logger.warn("Successfully destroy the vm [%s]" % machine_setting['name'])
             else:
-                self.logger.error("Fail to destroy the vm [%s]" % machine_setting['name'])
+                # self.logger.error("Fail to destroy the vm [%s]" % machine_setting['name'])
                 raise VirtualBootstrapError("Fail to destroy the vm [%s] " % machine_setting['name'])
-
 
     def get_machine_ip(self, machine_setting):
         version = commands.getoutput("lxc-version|awk '{print $3}'")

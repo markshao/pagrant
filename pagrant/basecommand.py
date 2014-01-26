@@ -8,7 +8,7 @@ import sys
 from pagrant.vendors.myoptparser import optparse
 from pagrant import cmdoptions
 from pagrant.cmdparser import ConfigOptionParser, UpdatingDefaultsHelpFormatter
-from pagrant.util import get_prog, format_exc
+from pagrant.util import get_prog
 from pagrant.exceptions import PagrantError, PagrantConfigError, VirtualBootstrapError
 from pagrant.log import logger
 
@@ -75,12 +75,12 @@ class Command(object):
         except (optparse.OptionError, optparse.BadOptionError), e:
             options = None
 
-        level = 1  # Notify
-        level = logger.level_for_integer(4 - level)
+        level = logger.DEBUG  # Fix me to enable the user specify the log
+
         complete_log = []
         logger.add_consumers(
-            (level, sys.stdout),
-            (logger.DEBUG, complete_log.append),
+            (logger.VERBOSE_DEBUG, sys.stdout),
+            (level, complete_log.append),
         )
         if getattr(options, "log_explicit_levels", False):
             logger.explicit_levels = True
@@ -93,15 +93,15 @@ class Command(object):
             self.run(args_bk)
         except VirtualBootstrapError:
             self.logger.fatal("ERROR: %s" % str(sys.exc_info()[1]))
-            self.logger.error('Exception information:\n%s' % format_exc())
+            # self.logger.error('Exception information:\n%s' % format_exc())
             sys.exit(1)
         except PagrantConfigError:
             self.logger.fatal("ERROR: %s" % str(sys.exc_info()[1]))
-            self.logger.error('Exception information:\n%s' % format_exc())
+            # self.logger.error('Exception information:\n%s' % format_exc())
             sys.exit(1)
         except PagrantError:
             self.logger.fatal("ERROR: %s" % str(sys.exc_info()[1]))
-            self.logger.error('Exception information:\n%s' % format_exc())
+            # self.logger.error('Exception information:\n%s' % format_exc())
             sys.exit(1)
         except KeyboardInterrupt:
             self.logger.fatal("The user interrupt the test case execution")

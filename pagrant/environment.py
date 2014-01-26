@@ -15,6 +15,7 @@ from pagrant.machine import Machine
 from pagrant.test import test_context
 from pagrant.importer import import_module
 from pagrant.commands.vmp import get_installed_vmproviders
+from pagrant.util import msg
 
 
 # each test contains a environment for test
@@ -31,17 +32,18 @@ class Environment(object):
 
         # decide the vmprovider to user
         vmprovider = self.context_config.get_vmprovider()
+        self.vmprovider_type = vmprovider.get("type")
 
-        if vmprovider.get("type") == "local":
+        if self.vmprovider_type == "local":
             vmprovider_path = vmprovider.get("path")
             vmprovider_name = vmprovider.get("name")
             vmprovider_init = import_module(vmprovider_name, vmprovider_path)
             vmprovider_action = import_module(vmprovider_init.provider_action_module,
                                               vmprovider_path + "/" + vmprovider_name)
             vmprovider_class = vmprovider_action.LxcProvider
-        elif vmprovider.get("type") in providers_class_map:
+        elif self.vmprovider_type in providers_class_map:
             vmprovider_class = providers_class_map.get(vmprovider.get("type"))
-        elif vmprovider.get("type") in get_installed_vmproviders():
+        elif self.vmprovider_type in get_installed_vmproviders():
             vmprovider_class = load_entry_point(vmprovider.get("type"), "PAGRANT", "VMPROVIDER")
         else:
             raise PagrantConfigError("The vmprovider is not support by the system")
@@ -77,7 +79,7 @@ class Environment(object):
                 machine["ip"] = self._vmprovider.get_machine_ip(machine)
                 if not machine["ip"] or len(machine["ip"]) == 0:
                     raise VirtualBootstrapError("could not get the ip")
-                self.logger.warn("The machine %s ip is [%s] " % (machine_name, machine["ip"]))
+                self.logger.warn(msg("vm <%s> IP is [%s] " % (machine_name, machine["ip"])))
 
             _m = Machine(machine["ip"], self.vmprovider_config["ssh_username"], self.vmprovider_config["ssh_password"])
             machines[machine_name] = _m
@@ -89,14 +91,15 @@ class Environment(object):
         self.machines = machines
 
     def check_machine_ssh(self):
-        self.logger.warn("check the ssh accessible for the machines")
+        self.logger.warn(msg("check the os ready with ssh "))
         for machine_name, machine in self.machines.items():
             start_time = time.time()
-            self.logger.start_progress("start check the %s for ssh ready" % machine_name)
+            self.logger.start_progress(msg("start check the %s for ssh ready" % machine_name))
             while True:
                 ssh = paramiko.SSHClient()
                 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 try:
+                    self.logger.show_progress("Wait for <%s> to be ready ..." % machine_name)
                     ssh.connect(machine.host, 22, machine.username, machine.password, timeout=20)
                     self.logger.end_progress()
                     break   # if no error throwed

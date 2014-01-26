@@ -97,3 +97,7 @@ def read_dict_fd(fpath):
     obj = load(f)
     f.close()
     return obj
+
+
+def msg(msg):
+    return "[PAGRANT] %s" % msg
