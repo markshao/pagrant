@@ -15,14 +15,13 @@
 import json
 import shlex
 import struct
+from pagrant.vendors.docker import utils, unixconn
+from pagrant.vendors.docker.auth import auth
 
 import re
 import requests
 import requests.exceptions
 import six
-from .auth import auth
-from .unixconn import unixconn
-from .utils import utils
 
 
 if not six.PY3:

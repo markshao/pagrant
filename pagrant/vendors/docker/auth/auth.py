@@ -16,10 +16,9 @@ import base64
 import fileinput
 import json
 import os
+from pagrant.vendors.docker import utils
 
 import six
-
-from ..utils import utils
 
 INDEX_URL = 'https://index.docker.io/v1/'
 DOCKER_CONFIG_FILENAME = '.dockercfg'

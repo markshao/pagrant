@@ -12,3 +12,4 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
+from pagrant.vendors.docker.client import Client, APIError  # flake8: noqa
