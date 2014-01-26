@@ -64,7 +64,7 @@ def create(container, template='ubuntu', storage=None, xargs=None, guest_ip=None
     '''
     if exists(container): raise ContainerAlreadyExists('Container {} already created!'.format(container))
 
-    command = 'lxc-create -n {}'.format(container)
+    command = 'lxc-create -q -n {}'.format(container)
     command += ' -t {}'.format(template)
     if storage: command += ' -B {}'.format(storage)
     if xargs: command += ' -- {}'.format(storage)
@@ -173,7 +173,7 @@ def start(container):
     '''
     if not exists(container): raise ContainerDoesntExists('Container {} does not exists!'.format(container))
     if container in running(): raise ContainerAlreadyRunning('Container {} is already running!'.format(container))
-    return _run('lxc-start -dn {}'.format(container))
+    return _run('lxc-start -q -dn {}'.format(container))
 
 
 def stop(container):
@@ -182,7 +182,7 @@ def stop(container):
     '''
     if not exists(container): raise ContainerDoesntExists('Container {} does not exists!'.format(container))
     if container in stopped(): raise ContainerNotRunning('Container {} is not running!'.format(container))
-    return _run('lxc-stop -n {}'.format(container))
+    return _run('lxc-stop -q -n {}'.format(container))
 
 
 def freeze(container):
@@ -191,7 +191,7 @@ def freeze(container):
     '''
     if not exists(container): raise ContainerDoesntExists('Container {} does not exists!'.format(container))
     if not container in running(): raise ContainerNotRunning('Container {} is not running!'.format(container))
-    return _run('lxc-freeze -n {}'.format(container))
+    return _run('lxc-freeze -q -n {}'.format(container))
 
 
 def unfreeze(container):
@@ -200,7 +200,7 @@ def unfreeze(container):
     '''
     if not exists(container): raise ContainerDoesntExists('Container {} does not exists!'.format(container))
     if not container in frozen(): raise ContainerNotRunning('Container {} is not frozen!'.format(container))
-    return _run('lxc-unfreeze -n {}'.format(container))
+    return _run('lxc-unfreeze -q -n {}'.format(container))
 
 
 def destroy(container):
@@ -208,7 +208,7 @@ def destroy(container):
     Destroys a container
     '''
     if not exists(container): raise ContainerDoesntExists('Container {} does not exists!'.format(container))
-    return _run('lxc-destroy -n {}'.format(container))
+    return _run('lxc-destroy -q -n {}'.format(container))
 
 
 def checkconfig():
