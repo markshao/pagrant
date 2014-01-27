@@ -8,9 +8,9 @@ __author__ = 'markshao'
 """
 
 import sys
-import os
 import logging
 
+import os
 import pkg_resources
 import colorama
 
@@ -151,6 +151,9 @@ class Logger(object):
             ## FIXME: should this be a name, not a level number?
             rendered = '%02i %s' % (level, rendered)
 
+        # add the prefix wrapper
+        rendered = self.prefix_msg_wrapper(rendered)
+
         for consumer_level, consumer in self.consumers:
             if self.level_matches(level, consumer_level):
                 if (self.in_progress_hanging
@@ -279,6 +282,9 @@ class Logger(object):
         for item in to_remove:
             self.consumers.remove(item)
         self.consumers.extend(to_add)
+
+    def prefix_msg_wrapper(self, msg):
+        return "[pagrant] %s" % msg
 
 
 logger = Logger()

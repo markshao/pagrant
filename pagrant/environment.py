@@ -15,7 +15,6 @@ from pagrant.machine import Machine
 from pagrant.test import test_context
 from pagrant.importer import import_module
 from pagrant.commands.vmp import get_installed_vmproviders
-from pagrant.util import msg
 
 
 # each test contains a environment for test
@@ -79,7 +78,7 @@ class Environment(object):
                 machine["ip"] = self._vmprovider.get_machine_ip(machine)
                 if not machine["ip"] or len(machine["ip"]) == 0:
                     raise VirtualBootstrapError("could not get the ip")
-                self.logger.warn(msg("vm <%s> IP is [%s] " % (machine_name, machine["ip"])))
+                self.logger.warn("vm <%s> IP is [%s] " % (machine_name, machine["ip"]))
 
             _m = Machine(machine["ip"], self.vmprovider_config["ssh_username"], self.vmprovider_config["ssh_password"])
             machines[machine_name] = _m
@@ -91,10 +90,10 @@ class Environment(object):
         self.machines = machines
 
     def check_machine_ssh(self):
-        self.logger.warn(msg("check the os ready with ssh "))
+        self.logger.warn("check the os ready with ssh ")
         for machine_name, machine in self.machines.items():
             start_time = time.time()
-            self.logger.start_progress(msg("start check the %s for ssh ready" % machine_name))
+            self.logger.start_progress("start check the %s for ssh ready" % machine_name)
             while True:
                 ssh = paramiko.SSHClient()
                 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())

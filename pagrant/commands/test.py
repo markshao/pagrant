@@ -13,7 +13,6 @@ from pagrant.commands.init import PAGRANT_CONFIG_FILE_NAME
 from pagrant.environment import Environment
 from pagrant.exceptions import PagrantConfigError, TestError
 from pagrant.version import version_number
-from pagrant.util import msg
 
 
 class TestCommand(Command):
@@ -59,12 +58,12 @@ class TestCommand(Command):
             self.print_context_log()
             self.environment.create_machines()
             self.environment.start_machines()
-            self.logger.info(msg("finish create the test environment"))
+            self.logger.info("finish create the test environment")
 
         # the init is always needed
         self.environment.init_test_context()
         self.environment.check_machine_ssh()
-        self.logger.info(msg("start test"))
+        self.logger.info("start test")
         try:
             main(argv=nose_argv)
         except Exception, e:
@@ -72,13 +71,13 @@ class TestCommand(Command):
         finally:
             if newvm:
                 self.logger.info(
-                    msg("clean the environment, delete the machines %s") % self.environment.machines_info.keys())
+                    "clean the environment, delete the machines %s" % self.environment.machines_info.keys())
                 self.environment.stop_machines()
                 self.environment.destroy_machines()
-                self.logger.info(msg("Done"))
+                self.logger.info("Done")
 
     def print_context_log(self):
-        self.logger.info(msg("pagrant version %s" % version_number()))
-        self.logger.info(msg("using vmprovider [%s]" % self.environment.vmprovider_type))
+        self.logger.info("pagrant version %s" % version_number())
+        self.logger.info("using vmprovider [%s]" % self.environment.vmprovider_type)
         self.logger.info(
-            msg("create the test environment with the machines %s" % self.environment.machines_info.keys()))
+            "create the test environment with the machines %s" % self.environment.machines_info.keys())
