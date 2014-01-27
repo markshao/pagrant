@@ -15,7 +15,8 @@ IP_COMMAND_1 = "lxc-ls --fancy|grep %s|awk '{print $3}'"  # lxc version: 1.0.0.a
 
 
 class LxcProvider(BaseProvider):
-    name = "lxc"
+    def __init__(self, provider_info, logger):
+        super(LxcProvider, self).__init__(provider_info, logger)
 
     def create_machines(self, machine_settings):
         for machine_name, machine_setting in machine_settings.items():

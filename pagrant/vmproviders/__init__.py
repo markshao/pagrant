@@ -4,10 +4,12 @@
 __author__ = ['markshao']
 
 from pagrant.vmproviders import lxc
+from pagrant.vmproviders import docker
 
 
 providers = {
     lxc.provider_name: lxc.privider_summary,
+    docker.provider_name: docker.privider_summary
 }
 
 
@@ -33,8 +35,10 @@ class BaseProvider(object):
 
 
 from pagrant.vmproviders.lxc.actions import LxcProvider
+from pagrant.vmproviders.docker.actions import DockerProvider
 
 providers_class_map = {
-    lxc.provider_name: LxcProvider
+    lxc.provider_name: LxcProvider,
+    docker.provider_name: DockerProvider
 }
 
