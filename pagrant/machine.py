@@ -32,4 +32,7 @@ class Machine(object):
     def upload_dir_to_remote(self, local_dir, remote_dir):
         self._fabric.upload_directory(local_dir, remote_dir)
 
+    def path_exists(self, path):
+        return self._fabric.path_existed(path)
+
 

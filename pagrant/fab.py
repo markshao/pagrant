@@ -33,3 +33,7 @@ class FabricSupport(object):
                 self.execute_shell_command("mkdir %s" % remote_dir)  # FIX ME ,just support the 1 layer dir
             put(local_dir, remote_dir)
 
+    def path_existed(self, path):
+        with settings(hide('warnings', 'running', 'stdout', 'stderr'), host_string=self.host, user=self.username,
+                      password=self.password, warn_only=True):
+            return files.exists(path)
