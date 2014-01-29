@@ -15,12 +15,21 @@ from pagrant.fab import FabricSupport
 
 
 class Machine(object):
-    def __init__(self, host, username, password):
+    def __init__(self, host, username, password, machine_info):
         self.host = host
         self.username = username
         self.password = password
+        self.machine_info = machine_info
 
         self._fabric = FabricSupport(self.host, self.username, self.password)
 
     def execute_command(self, command):
         return self._fabric.execute_shell_command(command)
+
+    def sudo_execute_command(self, command):
+        return self._fabric.sudo_execute_shell_command(command)
+
+    def upload_dir_to_remote(self, local_dir, remote_dir):
+        self._fabric.upload_directory(local_dir, remote_dir)
+
+

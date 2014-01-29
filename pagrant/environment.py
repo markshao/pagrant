@@ -80,7 +80,8 @@ class Environment(object):
                     raise VirtualBootstrapError("could not get the ip")
                 self.logger.warn("vm <%s> IP is [%s] " % (machine_name, machine["ip"]))
 
-            _m = Machine(machine["ip"], self.vmprovider_config["ssh_username"], self.vmprovider_config["ssh_password"])
+            _m = Machine(machine["ip"], self.vmprovider_config["ssh_username"], self.vmprovider_config["ssh_password"],
+                         machine)
             machines[machine_name] = _m
 
         # init the test context
