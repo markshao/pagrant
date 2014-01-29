@@ -13,15 +13,16 @@ class DockerProvider(BaseProvider):
         self.docker_client = Client()
         self.container_map = {}
         self.default_image = provider_info['default_image']
-        self.command = "/usr/sbin/sshd -D"  # who can fix me
+        self.command = "/usr/sbin/sshd -D"  # FIX ME
 
     def create_machines(self, machine_settings):
         for machine_name, machine in machine_settings.items():
             image = machine.get("image", None)
             image = image if image else self.default_image
-            volumes = machine['volumes']
+            volumes = machine.get("volumes", None)
+            DNS = machine.get("dns", None)
             res = self.docker_client.create_container(image=image, command=self.command, detach=True,
-                                                      volumes=volumes.values())
+                                                      volumes=volumes.values(), dns=DNS)
             self.container_map[machine_name] = res['Id']
             self.logger.info("create the container <%s> successfully" % machine_name)
 

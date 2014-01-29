@@ -109,5 +109,5 @@ class Environment(object):
                         raise VirtualBootstrapError("The machine %s could not been normally startup" % machine_name)
                     else:
                         self.logger.show_progress("wait %s seconds for the %s to ready" % (duration, machine_name))
-                        time.sleep(5)
+                        time.sleep(1)
                         continue
