@@ -63,7 +63,10 @@ class TestCommand(Command):
         # the init is always needed
         self.environment.init_test_context()
         self.environment.check_machine_ssh()
-        self.logger.info("start test")
+
+        self.logger.info("start provision the environment")
+        self.environment.provision_environment()
+
         try:
             main(argv=nose_argv)
         except Exception, e:

@@ -35,4 +35,7 @@ class Machine(object):
     def path_exists(self, path):
         return self._fabric.path_existed(path)
 
+    def delete_file_by_path(self, path):
+        return self._fabric.execute_shell_command("rm -f %s" % path)
+
 

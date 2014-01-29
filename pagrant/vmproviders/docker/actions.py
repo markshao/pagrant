@@ -20,9 +20,9 @@ class DockerProvider(BaseProvider):
             image = machine.get("image", None)
             image = image if image else self.default_image
             volumes = machine.get("volumes", None)
-            DNS = machine.get("dns", None)
+            __dns = machine.get("dns", None)
             res = self.docker_client.create_container(image=image, command=self.command, detach=True,
-                                                      volumes=volumes.values(), dns=DNS)
+                                                      volumes=volumes.values(), dns=__dns)
             self.container_map[machine_name] = res['Id']
             self.logger.info("create the container <%s> successfully" % machine_name)
 

@@ -15,6 +15,7 @@ from pagrant.machine import Machine
 from pagrant.test import test_context
 from pagrant.importer import import_module
 from pagrant.commands.vmp import get_installed_vmproviders
+from pagrant.provisioners import provision_machine
 
 
 # each test contains a environment for test
@@ -30,20 +31,20 @@ class Environment(object):
         self.logger = logger
 
         # decide the vmprovider to user
-        vmprovider = self.context_config.get_vmprovider()
-        self.vmprovider_type = vmprovider.get("type")
+        self.vmprovider_info = self.context_config.get_vmprovider()
+        self.vmprovider_type = self.vmprovider_info.get("type")
 
         if self.vmprovider_type == "local":
-            vmprovider_path = vmprovider.get("path")
-            vmprovider_name = vmprovider.get("name")
+            vmprovider_path = self.vmprovider_info.get("path")
+            vmprovider_name = self.vmprovider_info.get("name")
             vmprovider_init = import_module(vmprovider_name, vmprovider_path)
             vmprovider_action = import_module(vmprovider_init.provider_action_module,
                                               vmprovider_path + "/" + vmprovider_name)
             vmprovider_class = vmprovider_action.LxcProvider
         elif self.vmprovider_type in providers_class_map:
-            vmprovider_class = providers_class_map.get(vmprovider.get("type"))
+            vmprovider_class = providers_class_map.get(self.vmprovider_info.get("type"))
         elif self.vmprovider_type in get_installed_vmproviders():
-            vmprovider_class = load_entry_point(vmprovider.get("type"), "PAGRANT", "VMPROVIDER")
+            vmprovider_class = load_entry_point(self.vmprovider_info.get("type"), "PAGRANT", "VMPROVIDER")
         else:
             raise PagrantConfigError("The vmprovider is not support by the system")
 
@@ -112,3 +113,12 @@ class Environment(object):
                         self.logger.show_progress("wait %s seconds for the %s to ready" % (duration, machine_name))
                         time.sleep(1)
                         continue
+
+    def provision_environment(self):
+        for machine_name, machine_info in self.machines_info.items():
+            provision_list = machine_info.get("provisions", None)
+            if not provision_list or len(provision_list) == 0:
+                self.logger.warn("machine <%s> does not need provision" % machine_name)
+                continue
+
+            provision_machine(provision_list, self.machines[machine_name], self.logger, self.vmprovider_info)

@@ -1,9 +1,40 @@
 __author__ = 'markshao'
 
+import string
+from pagrant.exceptions import PagrantError
+
 
 class BaseProvisioner(object):
-    def __init__(self, machine, logger, provider_info=None):
+    def __init__(self, machine, logger, provision_info, provider_info=None):
         self.machine = machine
         self.logger = logger
         self.provider_info = provider_info
+        self.provision_info = provision_info
 
+    def provision(self):
+        self.do_provision()
+
+
+from pagrant.provisioners.puppet import PuppetProvisioner
+
+provision_map = {
+    "puppet": PuppetProvisioner
+}
+
+
+# used by the machine
+def provision_machine(provision_list, machine, logger, provider_info):
+    global provision_map
+
+    logger.info("provision the vm <%s>" % machine.machine_info["name"])
+    for provision in provision_list:
+        provision_type = provision.get("type", None)
+        if not provision_type:
+            raise PagrantError("The provision type is not spcified")
+        provision_type = string.lower(provision_type)
+
+        if provision_type not in provision_map:
+            raise PagrantError("The provision type %s is not support by pagrant" % provision_type)
+
+        provision_instance = provision_map[provision_type](machine, logger, provision, provider_info)
+        provision_instance.provision()
