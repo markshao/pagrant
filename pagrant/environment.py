@@ -121,4 +121,4 @@ class Environment(object):
                 self.logger.warn("machine <%s> does not need provision" % machine_name)
                 continue
 
-            provision_machine(provision_list, self.machines[machine_name], self.logger, self.vmprovider_info)
+            provision_machine(self.machines[machine_name], provision_list, self.logger, self.vmprovider_info)

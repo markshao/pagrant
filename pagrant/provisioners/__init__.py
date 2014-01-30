@@ -23,7 +23,7 @@ provision_map = {
 
 
 # used by the machine
-def provision_machine(provision_list, machine, logger, provider_info):
+def provision_machine(machine, provision_list, logger, provider_info):
     global provision_map
 
     logger.info("provision the vm <%s>" % machine.machine_info["name"])
