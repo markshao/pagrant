@@ -11,7 +11,7 @@ from pagrant.vendors.myoptparser.optparse import Option
 from pagrant.basecommand import Command
 from pagrant.commands.init import PAGRANT_CONFIG_FILE_NAME
 from pagrant.environment import Environment
-from pagrant.exceptions import PagrantConfigError, TestError
+from pagrant.exceptions import PagrantConfigError, TestError, PagrantError
 from pagrant.version import version_number
 
 
@@ -60,12 +60,18 @@ class TestCommand(Command):
             self.environment.start_machines()
             self.logger.info("finish create the test environment")
 
-        # the init is always needed
-        self.environment.init_test_context()
-        self.environment.check_machine_ssh()
+        try:
+            # the init is always needed
+            self.environment.init_test_context()
+            self.environment.check_machine_ssh()
 
-        self.logger.info("start provision the environment")
-        self.environment.provision_environment()
+            self.logger.info("start provision the environment")
+            self.environment.provision_environment()
+        except PagrantError:
+            if newvm:
+                self.environment.stop_machines()
+                self.environment.destroy_machines()
+                self.logger.error("The error happen , clear the environment")
 
         try:
             main(argv=nose_argv)
