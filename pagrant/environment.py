@@ -115,10 +115,17 @@ class Environment(object):
                         continue
 
     def provision_environment(self):
+        provision_machines = []
         for machine_name, machine_info in self.machines_info.items():
             provision_list = machine_info.get("provisions", None)
             if not provision_list or len(provision_list) == 0:
                 self.logger.warn("machine <%s> does not need provision" % machine_name)
                 continue
+            else:
+                provision_machines.append(self.machines[machine_name])
 
-            provision_machine(self.machines[machine_name], provision_list, self.logger, self.vmprovider_info)
+                # provision_machine(self.machines[machine_name], provision_list, self.logger, self.vmprovider_info)
+        from pagrant.process import process_map
+
+        process_map(provision_machines, provision_machine,
+                    **dict(provision_list=provision_list, logger=self.logger, vmprovider_info=self.vmprovider_info))

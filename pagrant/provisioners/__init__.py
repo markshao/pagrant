@@ -23,7 +23,7 @@ provision_map = {
 
 
 # used by the machine
-def provision_machine(machine, provision_list, logger, provider_info):
+def provision_machine(machine, provision_list, logger, vmprovider_info):
     global provision_map
 
     logger.info("provision the vm <%s>" % machine.machine_info["name"])
@@ -36,5 +36,5 @@ def provision_machine(machine, provision_list, logger, provider_info):
         if provision_type not in provision_map:
             raise PagrantError("The provision type %s is not support by pagrant" % provision_type)
 
-        provision_instance = provision_map[provision_type](machine, logger, provision, provider_info)
+        provision_instance = provision_map[provision_type](machine, logger, provision, vmprovider_info)
         provision_instance.provision()
