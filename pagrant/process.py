@@ -4,6 +4,7 @@
 __author__ = ['markshao']
 
 from multiprocessing import Process
+from pagrant.exceptions import PagrantError
 
 
 def process_map(iter, target, **kwargs):
@@ -19,10 +20,16 @@ def process_map(iter, target, **kwargs):
         process = Process(target=target, args=[item], kwargs=kwargs)
         process.daemon = True
         process_list.append(process)
+
+    for process in process_list:
         process.start()
 
     for process in process_list:
         process.join()
+
+    for process in process_list:
+        if process.exitcode != 0:
+            raise PagrantError("provision sub process get the exception")
 
 
 if __name__ == "__main__":
