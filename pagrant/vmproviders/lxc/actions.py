@@ -3,7 +3,6 @@
 
 __author__ = 'markshao'
 
-import commands
 import time
 from pagrant.vmproviders import BaseProvider
 from pagrant.vendors import lxclite as lxc
@@ -53,12 +52,14 @@ class LxcProvider(BaseProvider):
                 raise VirtualBootstrapError("Fail to destroy the vm [%s] " % machine_setting['name'])
 
     def get_machine_ip(self, machine_setting):
-        version = commands.getoutput("lxc-version|awk '{print $3}'")
+        from commands import getstatusoutput, getoutput  # solve the loop problem
+
+        version = getoutput("lxc-version|awk '{print $3}'")
 
         if version.startswith("1.0"):
-            results = commands.getstatusoutput(IP_COMMAND_1 % machine_setting["name"])
+            results = getstatusoutput(IP_COMMAND_1 % machine_setting["name"])
         else:
-            results = commands.getstatusoutput(IP_COMMAND_0 % machine_setting["name"])
+            results = getstatusoutput(IP_COMMAND_0 % machine_setting["name"])
 
         if not results[0] == 0:
             raise PagrantError("Could not get the ip")
