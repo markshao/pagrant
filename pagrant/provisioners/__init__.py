@@ -16,9 +16,11 @@ class BaseProvisioner(object):
 
 
 from pagrant.provisioners.puppet import PuppetProvisioner
+from pagrant.provisioners.web.tomcat import TomcatProvisioner
 
 provision_map = {
-    "puppet": PuppetProvisioner
+    "puppet": PuppetProvisioner,
+    "tomcat": TomcatProvisioner
 }
 
 

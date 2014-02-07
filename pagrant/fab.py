@@ -37,3 +37,13 @@ class FabricSupport(object):
         with settings(hide('warnings', 'running', 'stdout', 'stderr'), host_string=self.host, user=self.username,
                       password=self.password, warn_only=True):
             return files.exists(path)
+
+    def get_environment(self, environment_name):
+        with settings(hide('warnings', 'running', 'stdout', 'stderr'), host_string=self.host, user=self.username,
+                      password=self.password, warn_only=True):
+            command = "echo $%s" % environment_name
+            result = run(command, shell=True)
+            if result.return_code == 0:
+                return result
+            else:
+                return None

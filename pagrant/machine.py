@@ -38,4 +38,6 @@ class Machine(object):
     def delete_file_by_path(self, path):
         return self._fabric.execute_shell_command("rm -f %s" % path)
 
+    def get_env(self, env_name):
+        return self._fabric.get_environment(env_name)
 
