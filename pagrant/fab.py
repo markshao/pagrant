@@ -14,10 +14,14 @@ class FabricSupport(object):
         self.username = username
         self.password = password
 
-    def execute_shell_command(self, command):
+    def execute_shell_command(self, command, pty=None):
         with settings(hide('warnings', 'running', 'stdout', 'stderr'), host_string=self.host, user=self.username,
                       password=self.password, warn_only=True):
-            result = run(command, shell=True)
+            if not pty:
+                result = run(command, shell=True)
+            else:
+                result = run(command, shell=True, pty=False)
+
             return result, result.return_code
 
     def sudo_execute_shell_command(self, command):

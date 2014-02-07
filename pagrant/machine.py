@@ -23,8 +23,8 @@ class Machine(object):
 
         self._fabric = FabricSupport(self.host, self.username, self.password)
 
-    def execute_command(self, command):
-        return self._fabric.execute_shell_command(command)
+    def execute_command(self, command, pty=None):
+        return self._fabric.execute_shell_command(command, pty)
 
     def sudo_execute_command(self, command):
         return self._fabric.sudo_execute_shell_command(command)
