@@ -12,7 +12,8 @@ Pagrant support lxc by default. You can directly create the multiple test machin
 
 Install
 =======
-.. code-block:: python
+::
+
     pip install pagrant
 
 Vmprovider management
@@ -23,19 +24,22 @@ Pagrant provider a bundle of command lines to manage the vmprovider.
 
 List all the vmproviders installed
 ----------------------------------
-.. code-block:: python
+::
+
     pagrant vmprovider list
 
 
 Install the vmprovider
 ----------------------
-.. code-block:: python
+::
+
     pagrant vmprovider install [vmprovider name]
 
 
 Uninstall the vmprovider
 ------------------------
-.. code-block:: python
+::
+
     pagrant vmprovider remove [vmprovider name]
 
 
