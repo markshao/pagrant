@@ -59,6 +59,6 @@ class PuppetProvisioner(BaseProvisioner):
             self.logger.error("could not install the puppet for the machine <%s>" % self.machine.machine_info['name'])
             raise PagrantError("Fail to install the puppet")
 
-        result = self.machine.sudo_execute_command("apt-get isntall -y puppet")
+        result = self.machine.sudo_execute_command("apt-get install -y puppet")
         if result[1] != 0:
             self.logger.error("could not install the puppet for the machine <%s>" % self.machine.machine_info['name'])
