@@ -16,6 +16,10 @@ def get_axel_path():
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), 'downloader', 'axel')
 
 
+def get_wget_path():
+    return "wget"
+
+
 class CIBuild(object):
     def __init__(self, logger, ci_config):
         self.logger = logger
@@ -31,17 +35,16 @@ class CIBuild(object):
         if need_authentication:
             b64Val = base64.b64encode("%s:%s" % (self.username, self.password))
             authentication_header = "Authorization: Basic %s" % b64Val
-            download_command = [get_axel_path(), "-n", str(CONNECTIONS), "-H", "'%s'" % authentication_header, "-o",
-                                destination, self.get_latest_artifact_url()]
+            download_command = "%s -E --header=\"%s\" -O %s %s" % (
+                get_wget_path(), authentication_header, destination, self.get_latest_artifact_url())
 
         else:
-            download_command = [get_axel_path(), "-n", str(CONNECTIONS), "-o",
-                                destination, self.get_latest_artifact_url()]
+            download_command = "%s-O %s %s" % (
+                get_wget_path(), destination, self.get_latest_artifact_url())
 
-        print download_command
         start_download_time = time.time()
         try:
-            download_process = subprocess.Popen(download_command)
+            download_process = subprocess.Popen(download_command, shell=True)
         except Exception, e:
             raise PagrantError("could not start the download proecess")
 

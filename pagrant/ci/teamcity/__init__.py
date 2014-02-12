@@ -55,4 +55,4 @@ if __name__ == "__main__":
         "artifact_name": "xcp-rest.war"
     })
 
-    print tcb.download_to_local("/home/mark/Downloads/xcp-rest.war", False)
+    print tcb.download_to_local("/home/mark/Downloads/xcp-rest.war", True)
