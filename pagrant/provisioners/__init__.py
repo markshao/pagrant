@@ -17,10 +17,12 @@ class BaseProvisioner(object):
 
 from pagrant.provisioners.puppet import PuppetProvisioner
 from pagrant.provisioners.web.tomcat import TomcatProvisioner
+from pagrant.provisioners.health.http import HttpCheckerPrivisioner
 
 provision_map = {
     "puppet": PuppetProvisioner,
-    "tomcat": TomcatProvisioner
+    "tomcat": TomcatProvisioner,
+    "http_health": HttpCheckerPrivisioner
 }
 
 
