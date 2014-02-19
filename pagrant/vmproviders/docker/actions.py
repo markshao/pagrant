@@ -5,6 +5,7 @@ __author__ = 'markshao'
 
 from pagrant.vmproviders import BaseProvider
 from pagrant.vendors.docker import Client
+from pagrant.util import write_json_fd, read_dict_fd
 
 
 class DockerProvider(BaseProvider):
@@ -46,3 +47,16 @@ class DockerProvider(BaseProvider):
         container_id = self.container_map[machine_setting['name']]
         container_info = self.docker_client.inspect_container(container_id)
         return container_info['NetworkSettings']['IPAddress']
+
+    def persistent_to_local(self, machine_settings, path):
+        write_json_fd(self.container_map, path)
+
+
+    def clean_from_persistent(self, path):
+        res = read_dict_fd(path)
+
+        for key, value in res.items():
+            self.docker_client.stop(value)
+
+        for key, value in res.items():
+            self.docker_client.remove_container(value)

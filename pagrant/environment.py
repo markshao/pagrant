@@ -70,6 +70,12 @@ class Environment(object):
     def destroy_machines(self):
         self._vmprovider.destroy_machines(self.machines_info)
 
+    def persistent_to_path(self, path):
+        self._vmprovider.persistent_to_local(self.machines_info, path)
+
+    def clean_from_persistent(self, path):
+        self._vmprovider.clean_from_persistent(path)
+
     def init_test_context(self):
         machines = {}
         for machine_name in self.machines_info.keys():

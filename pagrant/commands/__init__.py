@@ -6,12 +6,19 @@ __author__ = ['markshao']
 from pagrant.commands.init import InitCommand
 from pagrant.commands.test import TestCommand
 from pagrant.commands.vmp import VmpCommand
+from pagrant.commands.clean import CleanCommand
+from pagrant.commands.deploy import DeployCommand
 
 commands = {
     VmpCommand.name: VmpCommand,
     InitCommand.name: InitCommand,
-    TestCommand.name: TestCommand
+    TestCommand.name: TestCommand,
+    DeployCommand.name: DeployCommand,
+    CleanCommand.name: CleanCommand
 }
+
+MACHINES_PERSISTENT_FILE = ".machines_persistent"
+PAGRANT_CONFIG_FILE_NAME = "Pagrantfile"
 
 
 def get_summaries(ignore_hidden=True, ordered=True):

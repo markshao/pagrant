@@ -9,7 +9,7 @@ from nose import main
 
 from pagrant.vendors.myoptparser.optparse import Option
 from pagrant.basecommand import Command
-from pagrant.commands.init import PAGRANT_CONFIG_FILE_NAME
+from pagrant.commands import PAGRANT_CONFIG_FILE_NAME
 from pagrant.environment import Environment
 from pagrant.exceptions import PagrantConfigError, TestError, PagrantError
 from pagrant.version import version_number

@@ -7,6 +7,7 @@ import time
 from pagrant.vmproviders import BaseProvider
 from pagrant.vendors import lxclite as lxc
 from pagrant.exceptions import VirtualBootstrapError, PagrantError
+from pagrant.util import write_json_fd, read_dict_fd
 
 IP_COMMAND_0 = "awk '{ print $4,$3 }' /var/lib/misc/dnsmasq.leases | column -t | grep %s |awk '{print $2}'"
 
@@ -65,3 +66,16 @@ class LxcProvider(BaseProvider):
             raise PagrantError("Could not get the ip")
 
         return results[1]
+
+    def persistent_to_local(self, machine_settings, path):
+        res = {}
+        for machine_name, machine_setting in machine_settings.items():
+            res[machine_name] = machine_setting['name']
+        write_json_fd(res, path)
+
+    def clean_from_persistent(self, path):
+        res = read_dict_fd(path)
+        for key, value in res.items():
+            lxc.stop(value)
+        for key, value in res.items():
+            lxc.destroy(value)

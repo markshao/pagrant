@@ -33,6 +33,12 @@ class BaseProvider(object):
     def get_machine_ip(self, machine_setting):
         NotImplemented
 
+    def persistent_to_local(self, machine_settings, path):
+        NotImplemented
+
+    def clean_from_persistent(self, path):
+        NotImplemented
+
 
 from pagrant.vmproviders.lxc.actions import LxcProvider
 from pagrant.vmproviders.docker.actions import DockerProvider

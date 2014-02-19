@@ -7,12 +7,10 @@ import sys
 import shutil
 
 import os
+from pagrant.commands import PAGRANT_CONFIG_FILE_NAME
 from pagrant.basecommand import Command
 from pagrant.util import get_userinput, is_true
 from pagrant.globalsettings import PAGRANT_CONFIG_TEMPLATE_PATH
-
-
-PAGRANT_CONFIG_FILE_NAME = "Pagrantfile"
 
 
 class InitCommand(Command):
