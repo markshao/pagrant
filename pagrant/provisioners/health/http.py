@@ -18,7 +18,7 @@ class HttpCheckerPrivisioner(BaseProvisioner):
         self.check_health()
 
     def check_health(self):
-        time.sleep(3)
+        time.sleep(5)
         start_time = time.time()
         self.logger.start_progress("start to check the %s for application to be ready" % self.machine.machine_info['name'])
         while True:

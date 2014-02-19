@@ -19,6 +19,8 @@ class Machine(object):
         self.host = host
         self.username = username
         self.password = password
+        self.group_id = machine_info['group_id']
+        self.type = machine_info['type']
         self.machine_info = machine_info
 
         self._fabric = FabricSupport(self.host, self.username, self.password)
