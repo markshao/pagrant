@@ -22,6 +22,5 @@ setup(
                       'six',
                       'requests',
                       'jenkinsapi',
-                      'ecdsa',
-                      'pytz']
+                      'ecdsa', ]
 )
