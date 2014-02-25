@@ -16,7 +16,12 @@ setup(
     platforms='any',
     keywords='framework nose testing',
     packages=find_packages(exclude=['test']),
-    install_requires=['Fabric==1.8.0',
-                      'nose==1.3.0',
-                      'colorama==0.2.7']
+    install_requires=['fabric',
+                      'nose',
+                      'colorama',
+                      'six',
+                      'requests',
+                      'jenkinsapi',
+                      'ecdsa',
+                      'pytz']
 )
