@@ -1,9 +1,8 @@
 from setuptools import setup, find_packages
-from pagrant.version import version_number
 
 setup(
     name='pagrant',
-    version=version_number(),
+    version="1.0.3",
     url='https://github.com/markshao/pagrant',
     license='MIT',
     author='markshao,xiaobo',
@@ -22,5 +21,7 @@ setup(
                       'six',
                       'requests',
                       'jenkinsapi',
-                      'ecdsa', ]
+                      'ecdsa',
+                      'texttable',
+                      'websocket']
 )
