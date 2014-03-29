@@ -11,7 +11,7 @@ from pagrant.util import write_json_fd, read_dict_fd
 class DockerProvider(BaseProvider):
     def __init__(self, provider_info, logger):
         super(DockerProvider, self).__init__(provider_info, logger)
-        self.docker_client = Client()
+        self.docker_client = Client(base_url=provider_info.get("docker_info", None))
         self.container_map = {}
         self.default_image = provider_info['default_image']
         self.command = "/usr/sbin/sshd -D"  # FIX ME
@@ -29,8 +29,9 @@ class DockerProvider(BaseProvider):
 
     def start_machines(self, machine_settings):
         for machine_name, machine in machine_settings.items():
-            volumes = machine['volumes']
-            self.docker_client.start(self.container_map[machine_name], binds=volumes)
+            volumes = machine.get("volumes", None)
+            port_bindings = machine.get("port_bindings", None)
+            self.docker_client.start(self.container_map[machine_name], binds=volumes, port_bindings=port_bindings)
             self.logger.info("start the container <%s> successfully " % machine_name)
 
     def stop_machines(self, machine_settings):
