@@ -20,7 +20,6 @@ setup(
                       'colorama',
                       'six',
                       'requests',
-                      'jenkinsapi',
                       'ecdsa',
                       'texttable',
                       'websocket']
